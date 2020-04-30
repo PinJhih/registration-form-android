@@ -35,8 +35,10 @@ class AddFormActivity : AppCompatActivity() {
         var status = ""
 
         for (i in startNumber until endNumber + 1) {
-            members += "$i,"
-            status += "f,"
+            members += "$i"
+            status += "f"
+            if (i != endNumber)
+                members += ","
         }
 
         db.execSQL(
