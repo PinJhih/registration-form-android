@@ -8,7 +8,7 @@ import kotlinx.android.synthetic.main.activity_add_form.*
 
 class AddFormActivity : AppCompatActivity() {
 
-    lateinit var db: SQLiteDatabase
+    private lateinit var db: SQLiteDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,6 +18,8 @@ class AddFormActivity : AppCompatActivity() {
 
         btn_add_form.setOnClickListener {
             addForm()
+            setResult(Activity.RESULT_OK)
+            finish()
         }
 
         btn_cancel.setOnClickListener {
