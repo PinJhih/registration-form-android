@@ -4,6 +4,7 @@ import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,12 +21,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         db = FormsDB(this).writableDatabase
+
         val linearLayoutManager = LinearLayoutManager(this)
-        adapter = FormsAdapter(forms)
         linearLayoutManager.orientation = RecyclerView.VERTICAL
         rv_forms.layoutManager = linearLayoutManager
         val decoration = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
         rv_forms.addItemDecoration(decoration)
+        adapter = FormsAdapter(this, forms)
         rv_forms.adapter = adapter
         upDateList()
 

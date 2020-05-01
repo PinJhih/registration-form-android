@@ -1,12 +1,15 @@
 package com.example.registration_form
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_form.view.*
 
 class FormsAdapter(
+    private val context: Context,
     private val forms: ArrayList<Form>
 ) :
     RecyclerView.Adapter<FormsAdapter.ViewHolder>() {
@@ -31,10 +34,17 @@ class FormsAdapter(
         val textMembers = "總人數:$numMembers"
         val textPaid = "已繳交:$numPaid"
         val textUnPaid = "未繳交:$numUnPaid"
-
+        val list = arrayOf("編輯表格", "刪除表格", "複製未繳交成員名單")
+        val alertDialog = AlertDialog.Builder(context)
+            .setItems(list) { _, i ->
+            }
         itemView.tv_title.text = forms[position].title
         itemView.tv_num_members.text = textMembers
-            itemView.tv_num_paid.text = textPaid
+        itemView.tv_num_paid.text = textPaid
         itemView.tv_num_unpaid.text = textUnPaid
+
+        itemView.setOnClickListener {
+            alertDialog.show()
+        }
     }
 }
