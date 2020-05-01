@@ -4,11 +4,14 @@ import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var db: SQLiteDatabase
+    private lateinit var adapter: FormsAdapter
     private val forms = ArrayList<Form>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -16,6 +19,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         db = FormsDB(this).writableDatabase
+        val linearLayoutManager = LinearLayoutManager(this)
+        adapter = FormsAdapter(forms)
+        linearLayoutManager.orientation = RecyclerView.VERTICAL
+        rv_forms.layoutManager = linearLayoutManager
+        rv_forms.adapter = adapter
+        upDateList()
 
         btn_start_edit.setOnClickListener {
             val i = Intent(this, AddFormActivity::class.java)
@@ -41,6 +50,7 @@ class MainActivity : AppCompatActivity() {
             val status = toStatusList(data.getString(3))
             val form = Form(id, title, members, status)
             forms.add(form)
+            adapter.notifyDataSetChanged()
             data.moveToNext()
         }
         data.close()
