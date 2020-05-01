@@ -4,6 +4,7 @@ import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_main.*
@@ -23,6 +24,8 @@ class MainActivity : AppCompatActivity() {
         adapter = FormsAdapter(forms)
         linearLayoutManager.orientation = RecyclerView.VERTICAL
         rv_forms.layoutManager = linearLayoutManager
+        val decoration = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
+        rv_forms.addItemDecoration(decoration)
         rv_forms.adapter = adapter
         upDateList()
 
