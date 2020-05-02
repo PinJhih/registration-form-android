@@ -44,6 +44,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun upDateList() {
         forms.clear()
+        adapter.notifyDataSetChanged()
         val data = db.rawQuery("SELECT * FROM forms", null)
         data.moveToFirst()
 
