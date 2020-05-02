@@ -1,9 +1,13 @@
 package com.example.registration_form
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -13,6 +17,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var db: SQLiteDatabase
     private lateinit var adapter: FormsAdapter
+    private lateinit var clipboard: ClipboardManager
+    private lateinit var clip: ClipData
     private val forms = ArrayList<Form>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,6 +26,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         db = FormsDB(this).writableDatabase
+        clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
 
         val linearLayoutManager = LinearLayoutManager(this)
         linearLayoutManager.orientation = RecyclerView.VERTICAL
@@ -96,7 +103,17 @@ class MainActivity : AppCompatActivity() {
         upDateList()
     }
 
-    fun copy() {
+    fun copy(members: ArrayList<Int>, status: ArrayList<Boolean>) {
+        var msg = ""
+        for (i in 0 until members.size) {
+            if (!status[i]) {
+                msg += "${members[i]}"
+                if (i != members.size + 1)
+                    msg += ",\t"
+            }
+        }
+        clip = ClipData.newPlainText("msg", msg)
+        clipboard.setPrimaryClip(clip)
+        Toast.makeText(this, "已複製", Toast.LENGTH_SHORT).show()
     }
-
 }

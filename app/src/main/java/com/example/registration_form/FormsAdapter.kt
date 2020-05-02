@@ -39,7 +39,10 @@ class FormsAdapter(
             .setItems(list) { _, i ->
                 when (i) {
                     0 -> (context as MainActivity).edit(forms[position].id)
-                    1 -> (context as MainActivity).copy()
+                    1 -> (context as MainActivity).copy(
+                        forms[position].memberList,
+                        forms[position].status
+                    )
                     else -> (context as MainActivity).delete(forms[position].id)
                 }
             }
