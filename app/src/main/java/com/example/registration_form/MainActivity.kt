@@ -4,7 +4,6 @@ import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -86,6 +85,15 @@ class MainActivity : AppCompatActivity() {
             }
         }
         return list
+    }
+
+    fun edit(id: Long) {
+    }
+
+    fun delete(id: Long) {
+    }
+
+    fun copy() {
     }
 
 }

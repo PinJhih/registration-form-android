@@ -34,9 +34,14 @@ class FormsAdapter(
         val textMembers = "總人數:$numMembers"
         val textPaid = "已繳交:$numPaid"
         val textUnPaid = "未繳交:$numUnPaid"
-        val list = arrayOf("編輯表格", "刪除表格", "複製未繳交成員名單")
+        val list = arrayOf("編輯表格", "複製未繳交成員名單", "刪除表格")
         val alertDialog = AlertDialog.Builder(context)
             .setItems(list) { _, i ->
+                when (i) {
+                    0 -> (context as MainActivity).edit(forms[position].id)
+                    1 -> (context as MainActivity).copy()
+                    else -> (context as MainActivity).delete(forms[position].id)
+                }
             }
         itemView.tv_title.text = forms[position].title
         itemView.tv_num_members.text = textMembers
