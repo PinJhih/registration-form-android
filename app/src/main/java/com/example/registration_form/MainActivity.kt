@@ -91,6 +91,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun delete(id: Long) {
+        db.execSQL("DELETE FROM forms WHERE id LIKE $id")
+        upDateList()
     }
 
     fun copy() {
