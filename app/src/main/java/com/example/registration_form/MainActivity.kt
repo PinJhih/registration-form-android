@@ -95,7 +95,14 @@ class MainActivity : AppCompatActivity() {
         return list
     }
 
-    fun edit(id: Long) {
+    fun edit(id: Long, members: ArrayList<Int>, status: ArrayList<Boolean>) {
+        val i = Intent(this, EditFormActivity::class.java)
+        val b = Bundle()
+        b.putLong("id", id)
+        b.putIntegerArrayList("members", members)
+        b.putBooleanArray("status", status.toBooleanArray())
+        i.putExtras(b)
+        startActivityForResult(i, 1)
     }
 
     fun delete(id: Long) {

@@ -23,7 +23,6 @@ class FormsAdapter(
 
     override fun getItemCount() = forms.size
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
         val itemView = holder.itemView
         val numMembers = forms[position].memberList.count()
         var numPaid = 0
@@ -38,7 +37,11 @@ class FormsAdapter(
         val alertDialog = AlertDialog.Builder(context)
             .setItems(list) { _, i ->
                 when (i) {
-                    0 -> (context as MainActivity).edit(forms[position].id)
+                    0 -> (context as MainActivity).edit(
+                        forms[position].id,
+                        forms[position].memberList,
+                        forms[position].status
+                    )
                     1 -> (context as MainActivity).copy(
                         forms[position].memberList,
                         forms[position].status
