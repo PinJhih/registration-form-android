@@ -25,12 +25,12 @@ class MembersAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val itemView = holder.itemView
 
-        itemView.tv_member.text = "${members[position]}"
-        itemView.tv_member.setTextColor(
+        itemView.btn_member.text = "${members[position]}"
+        itemView.btn_member.setTextColor(
             if (status[position]) Color.parseColor("#3C783C")
             else Color.parseColor("#AA4343")
         )
-        itemView.tv_member.setBackgroundColor(
+        itemView.btn_member.setBackgroundColor(
             if (status[position]) Color.parseColor("#D9CBFFC4")
             else Color.parseColor("#D9FFC0C0")
         )
