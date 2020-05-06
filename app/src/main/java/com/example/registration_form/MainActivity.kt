@@ -83,8 +83,8 @@ class MainActivity : AppCompatActivity() {
         val list = ArrayList<Int>()
         var member = 0
 
-        for (i in members.indices) {
-            if (i + 1 == members.length || members[i] == ',') {
+        for (i in members.indices + 1) {
+            if (i == members.length || members[i] == ',') {
                 list.add(member)
                 member = 0
             } else {
