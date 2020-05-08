@@ -1,5 +1,6 @@
 package com.example.registration_form
 
+import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_member.view.*
 
 class MembersAdapter(
+    private val context: Context,
     private val members: ArrayList<Int>,
     private val status: ArrayList<Boolean>
 ) :
@@ -34,6 +36,9 @@ class MembersAdapter(
             if (status[position]) Color.parseColor("#D9CBFFC4")
             else Color.parseColor("#D9FFC0C0")
         )
+        itemView.btn_member.setOnClickListener {
+            (context as EditFormActivity).editStatus(position, members[position])
+        }
     }
 }
 
