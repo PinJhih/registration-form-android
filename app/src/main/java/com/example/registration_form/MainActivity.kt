@@ -45,7 +45,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
+        data?.extras?.let {
+            val id = it.getLong("id")
+            val status = it.getString("status")!!
+            saveToDB(id, status)
+        }
         upDateList()
     }
 
@@ -66,6 +70,10 @@ class MainActivity : AppCompatActivity() {
             data.moveToNext()
         }
         data.close()
+    }
+
+    private fun saveToDB(id: Long, status: String) {
+        db.execSQL("UPDATE forms SET status = '$status' WHERE id LIKE '$id'")
     }
 
     private fun toStatusList(status: String): ArrayList<Boolean> {
