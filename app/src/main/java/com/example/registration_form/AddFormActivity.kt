@@ -1,6 +1,7 @@
 package com.example.registration_form
 
 import android.app.Activity
+import android.content.SharedPreferences
 import android.database.sqlite.SQLiteDatabase
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,11 +11,22 @@ import kotlinx.android.synthetic.main.activity_add_form.*
 class AddFormActivity : AppCompatActivity() {
 
     private lateinit var db: SQLiteDatabase
+    private lateinit var userInfo: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_form)
 
+        userInfo = getSharedPreferences("userInfo", Activity.MODE_PRIVATE)
+        val edit = userInfo.edit()
+
+        if (userInfo.getBoolean("firstTimeAdd", true)) {
+            edit.putBoolean("firstTimeAdd", false)
+            edit.apply()
+        } else {
+            ed_min_num.setText("${userInfo.getInt("numMin", 0)}")
+            ed_max_num.setText("${userInfo.getInt("numMax", 0)}")
+        }
         db = FormsDB(this).writableDatabase
 
         btn_add_form.setOnClickListener {
@@ -25,6 +37,9 @@ class AddFormActivity : AppCompatActivity() {
             else if (ed_max_num.text.toString().toInt() >= 1000)
                 Toast.makeText(this, "超過最大值", Toast.LENGTH_SHORT).show()
             else {
+                edit.putInt("numMin", "${ed_min_num.text}".toInt())
+                edit.putInt("numMax", "${ed_max_num.text}".toInt())
+                edit.apply()
                 addForm()
                 setResult(Activity.RESULT_OK)
                 finish()
