@@ -132,7 +132,7 @@ class MainActivity : AppCompatActivity() {
         for (i in 0 until members.size) {
             if (!status[i]) {
                 msg += "${members[i]}"
-                if (i != members.size + 1)
+                if (i + 1 != members.size)
                     msg += ",\t"
             }
         }
