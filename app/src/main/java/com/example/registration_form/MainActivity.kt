@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlin.Exception
 
 class MainActivity : AppCompatActivity() {
 
@@ -73,7 +74,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun saveToDB(id: Long, status: String) {
-        db.execSQL("UPDATE forms SET status = '$status' WHERE id LIKE '$id'")
+        try {
+            db.execSQL("UPDATE forms SET status = '$status' WHERE id LIKE '$id'")
+        } catch (e: Exception) {
+            Toast.makeText(this, "表格更新失敗", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun toStatusList(status: String): ArrayList<Boolean> {
@@ -114,8 +119,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun delete(id: Long) {
-        db.execSQL("DELETE FROM forms WHERE id LIKE $id")
-        upDateList()
+        try {
+            db.execSQL("DELETE FROM forms WHERE id LIKE $id")
+            upDateList()
+        } catch (e: Exception) {
+            Toast.makeText(this, "表格刪除失敗", Toast.LENGTH_SHORT).show()
+        }
     }
 
     fun copy(members: ArrayList<Int>, status: ArrayList<Boolean>) {
