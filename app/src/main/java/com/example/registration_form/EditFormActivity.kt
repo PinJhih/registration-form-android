@@ -51,9 +51,10 @@ class EditFormActivity : AppCompatActivity() {
     }
 
     fun editStatus(index: Int, number: Int) {
+        val msg = if(!status[index]) "已繳交" else "未繳交"
         AlertDialog.Builder(this)
             .setTitle("確認修改")
-            .setMessage("將${number}的繳交狀態設為${!status[index]}?")
+            .setMessage("將${number}號的繳交狀態設為$msg?")
             .setPositiveButton("確認") { _, _ ->
                 status[index] = !status[index]
                 adapter.notifyDataSetChanged()
