@@ -1,6 +1,10 @@
 package com.example.registration_form
 
 import android.content.Context
+import android.graphics.Color
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,15 +28,11 @@ class FormsAdapter(
     override fun getItemCount() = forms.size
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val itemView = holder.itemView
-        val numMembers = forms[position].memberList.count()
         var numPaid = 0
         for (i in forms[position].status)
             if (i)
                 numPaid++
-        val numUnPaid = numMembers - numPaid
-        val textMembers = "總人數:$numMembers"
-        val textPaid = "已繳交:$numPaid"
-        val textUnPaid = "未繳交:$numUnPaid"
+        val numUnpaid = forms[position].memberList.size - numPaid
         val list = arrayOf("編輯表格", "複製未繳交成員名單", "刪除表格")
         val alertDialog = AlertDialog.Builder(context)
             .setItems(list) { _, i ->
@@ -49,11 +49,21 @@ class FormsAdapter(
                     else -> (context as MainActivity).delete(forms[position].id)
                 }
             }
+        val textPaid = SpannableString("已繳交\n$numPaid")
+        textPaid.setSpan(
+            ForegroundColorSpan(Color.BLACK),
+            0, 3,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        val textUnpaid = SpannableString("未繳交\n$numUnpaid")
+        textUnpaid.setSpan(
+            ForegroundColorSpan(Color.BLACK),
+            0, 3,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
         itemView.tv_title.text = forms[position].title
-        itemView.tv_num_members.text = textMembers
-        itemView.tv_num_paid.text = textPaid
-        itemView.tv_num_unpaid.text = textUnPaid
-
+        itemView.tv_paid.text = textPaid
+        itemView.tv_unpaid.text = textUnpaid
         itemView.setOnClickListener {
             alertDialog.show()
         }
