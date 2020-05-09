@@ -26,38 +26,58 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
         android:autofillHints=""
         android:ems="10"
-        android:hint="首位成員號碼"
+        android:hint="第一號"
         android:inputType="number"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tv_to"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ed_title" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_member" />
 
     <EditText
         android:id="@+id/ed_max_num"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:autofillHints=""
         android:ems="10"
-        android:hint="最後成員號碼"
+        android:hint="最後一號"
         android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tv_to"
+        app:layout_constraintTop_toTopOf="@+id/ed_min_num" />
+
+    <TextView
+        android:id="@+id/tv_to"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="到"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/ed_min_num"
+        app:layout_constraintEnd_toStartOf="@+id/ed_max_num"
+        app:layout_constraintStart_toEndOf="@+id/ed_min_num"
+        app:layout_constraintTop_toTopOf="@+id/ed_min_num" />
+
+    <TextView
+        android:id="@+id/tv_member"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="成員號碼"
+        android:textColor="@android:color/black"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ed_min_num" />
+        app:layout_constraintTop_toBottomOf="@+id/ed_title" />
 
     <Button
         android:id="@+id/btn_add_form"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:background="@android:color/transparent"
         android:text="建立"
-        android:textColor="@android:color/holo_blue_dark"
+        android:textColor="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -68,7 +88,7 @@
         android:layout_marginEnd="8dp"
         android:background="@android:color/transparent"
         android:text="取消"
-        android:textColor="@android:color/holo_blue_dark"
+        android:textColor="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btn_add_form" />
 
