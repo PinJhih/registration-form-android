@@ -10,5 +10,5 @@
     <string name="number_test">00</string>
     <string name="paid">已繳交\n0</string>
     <string name="unpaid">未繳交\n10</string>
-    <string name="confirm">確認修改</string>
+    <string name="save">儲存</string>
 </resources>

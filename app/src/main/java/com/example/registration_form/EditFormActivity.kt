@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.activity_edit_form.*
@@ -35,8 +37,23 @@ class EditFormActivity : AppCompatActivity() {
         rv_members.layoutManager = gridLayoutManager
         adapter = MembersAdapter(this, members, status)
         rv_members.adapter = adapter
+    }
 
-        btn_finish.setOnClickListener {
+    fun editStatus(index: Int, number: Int) {
+        val msg = if (!status[index]) "已繳交" else "未繳交"
+        AlertDialog.Builder(this)
+            .setTitle("確認修改")
+            .setMessage("將${number}號的繳交狀態設為$msg?")
+            .setPositiveButton("確認") { _, _ ->
+                status[index] = !status[index]
+                adapter.notifyDataSetChanged()
+            }
+            .setNegativeButton("取消") { _, _ -> }
+            .show()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.finish) {
             val intent = Intent()
             val b = Bundle()
             var s = ""
@@ -48,18 +65,12 @@ class EditFormActivity : AppCompatActivity() {
             setResult(Activity.RESULT_OK, intent)
             finish()
         }
+        return true
     }
 
-    fun editStatus(index: Int, number: Int) {
-        val msg = if(!status[index]) "已繳交" else "未繳交"
-        AlertDialog.Builder(this)
-            .setTitle("確認修改")
-            .setMessage("將${number}號的繳交狀態設為$msg?")
-            .setPositiveButton("確認") { _, _ ->
-                status[index] = !status[index]
-                adapter.notifyDataSetChanged()
-            }
-            .setNegativeButton("取消") { _, _ -> }
-            .show()
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        super.onCreateOptionsMenu(menu)
+        menuInflater.inflate(R.menu.menu_edit, menu)
+        return true
     }
 }
