@@ -11,4 +11,5 @@
     <string name="paid">已繳交\n0</string>
     <string name="unpaid">未繳交\n10</string>
     <string name="save">儲存</string>
+    <string name="date">2020/05/10</string>
 </resources>

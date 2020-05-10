@@ -63,9 +63,10 @@ class MainActivity : AppCompatActivity() {
         for (i in 0 until data.count) {
             val id = data.getString(0).toLong()
             val title = data.getString(1)
-            val members = toMemberList(data.getString(2))
-            val status = toStatusList(data.getString(3))
-            val form = Form(id, title, members, status)
+            val date = data.getString(2)
+            val members = toMemberList(data.getString(3))
+            val status = toStatusList(data.getString(4))
+            val form = Form(id, title, date, members, status)
             forms.add(form)
             adapter.notifyDataSetChanged()
             data.moveToNext()

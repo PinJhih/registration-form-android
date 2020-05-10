@@ -3,10 +3,13 @@ package com.example.registration_form
 import android.app.Activity
 import android.content.SharedPreferences
 import android.database.sqlite.SQLiteDatabase
+import android.icu.text.SimpleDateFormat
+import android.icu.util.Calendar
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_add_form.*
+import java.util.*
 
 class AddFormActivity : AppCompatActivity() {
 
@@ -55,6 +58,13 @@ class AddFormActivity : AppCompatActivity() {
     private fun addForm() {
         val id = "${System.currentTimeMillis()}"
         val title = "${ed_title.text}"
+        val cal = Calendar.getInstance()
+        cal.get(Calendar.YEAR)
+        cal.get(Calendar.MONTH)
+        cal.get(Calendar.DAY_OF_MONTH)
+        val myFormat = "yyyy/MM/dd"
+        val sdf = SimpleDateFormat(myFormat, Locale.TAIWAN)
+        val date = sdf.format(cal.time)
         val startNumber = ed_min_num.text.toString().toInt()
         val endNumber = ed_max_num.text.toString().toInt()
         var members = ""
@@ -68,8 +78,8 @@ class AddFormActivity : AppCompatActivity() {
                     members += ","
             }
             db.execSQL(
-                "INSERT INTO forms(id,title,members,status) VALUES(?,?,?,?)",
-                arrayOf<Any?>(id, title, members, status)
+                "INSERT INTO forms(id,title,date,members,status) VALUES(?,?,?,?,?)",
+                arrayOf<Any?>(id, title, date, members, status)
             )
         } catch (e: Exception) {
             Toast.makeText(this, "表格建立失敗", Toast.LENGTH_SHORT).show()

@@ -61,9 +61,12 @@ class FormsAdapter(
             0, 3,
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         )
+        val date = forms[position].date
+
         itemView.tv_title.text = forms[position].title
         itemView.tv_paid.text = textPaid
         itemView.tv_unpaid.text = textUnpaid
+        itemView.tv_date.text = date
         itemView.setOnClickListener {
             alertDialog.show()
         }
