@@ -8,9 +8,9 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.GridLayoutManager
-import kotlinx.android.synthetic.main.activity_edit_form.*
+import kotlinx.android.synthetic.main.activity_edit_table.*
 
-class EditFormActivity : AppCompatActivity() {
+class EditTableActivity : AppCompatActivity() {
 
     private lateinit var gridLayoutManager: GridLayoutManager
     private lateinit var adapter: MembersAdapter
@@ -20,7 +20,7 @@ class EditFormActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_edit_form)
+        setContentView(R.layout.activity_edit_table)
 
         intent?.extras?.let {
             id = it.getLong("id")

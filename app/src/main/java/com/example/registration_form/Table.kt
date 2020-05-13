@@ -1,6 +1,6 @@
 package com.example.registration_form
 
-data class Form(
+data class Table(
     var id: Long,
     var title: String,
     var date: String,

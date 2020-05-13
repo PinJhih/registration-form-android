@@ -37,7 +37,7 @@ class MembersAdapter(
             else Color.parseColor("#D9FFC0C0")
         )
         itemView.btn_member.setOnClickListener {
-            (context as EditFormActivity).editStatus(position, members[position])
+            (context as EditTableActivity).editStatus(position, members[position])
         }
     }
 }

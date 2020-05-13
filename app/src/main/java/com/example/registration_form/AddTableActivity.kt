@@ -8,17 +8,17 @@ import android.icu.util.Calendar
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
-import kotlinx.android.synthetic.main.activity_add_form.*
+import kotlinx.android.synthetic.main.activity_add_table.*
 import java.util.*
 
-class AddFormActivity : AppCompatActivity() {
+class AddTableActivity : AppCompatActivity() {
 
     private lateinit var db: SQLiteDatabase
     private lateinit var userInfo: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_form)
+        setContentView(R.layout.activity_add_table)
 
         userInfo = getSharedPreferences("userInfo", Activity.MODE_PRIVATE)
         val edit = userInfo.edit()
@@ -30,7 +30,7 @@ class AddFormActivity : AppCompatActivity() {
             ed_min_num.setText("${userInfo.getInt("numMin", 0)}")
             ed_max_num.setText("${userInfo.getInt("numMax", 0)}")
         }
-        db = FormsDB(this).writableDatabase
+        db = TablesDB(this).writableDatabase
 
         btn_add_form.setOnClickListener {
             if (ed_max_num.text.isEmpty() || ed_min_num.text.isEmpty() || ed_title.text.isEmpty())
@@ -78,7 +78,7 @@ class AddFormActivity : AppCompatActivity() {
                     members += ","
             }
             db.execSQL(
-                "INSERT INTO forms(id,title,date,members,status) VALUES(?,?,?,?,?)",
+                "INSERT INTO tables(id,title,date,members,status) VALUES(?,?,?,?,?)",
                 arrayOf<Any?>(id, title, date, members, status)
             )
         } catch (e: Exception) {

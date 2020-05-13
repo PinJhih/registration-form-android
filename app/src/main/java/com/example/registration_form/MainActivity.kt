@@ -17,16 +17,16 @@ import kotlin.Exception
 class MainActivity : AppCompatActivity() {
 
     private lateinit var db: SQLiteDatabase
-    private lateinit var adapter: FormsAdapter
+    private lateinit var adapter: TablesAdapter
     private lateinit var clipboard: ClipboardManager
     private lateinit var clip: ClipData
-    private val forms = ArrayList<Form>()
+    private val tables = ArrayList<Table>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        db = FormsDB(this).writableDatabase
+        db = TablesDB(this).writableDatabase
         clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
 
         val linearLayoutManager = LinearLayoutManager(this)
@@ -34,12 +34,12 @@ class MainActivity : AppCompatActivity() {
         rv_forms.layoutManager = linearLayoutManager
         val decoration = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
         rv_forms.addItemDecoration(decoration)
-        adapter = FormsAdapter(this, forms)
+        adapter = TablesAdapter(this, tables)
         rv_forms.adapter = adapter
         upDateList()
 
         btn_start_edit.setOnClickListener {
-            val i = Intent(this, AddFormActivity::class.java)
+            val i = Intent(this, AddTableActivity::class.java)
             startActivityForResult(i, 0)
         }
     }
@@ -55,9 +55,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun upDateList() {
-        forms.clear()
+        tables.clear()
         adapter.notifyDataSetChanged()
-        val data = db.rawQuery("SELECT * FROM forms", null)
+        val data = db.rawQuery("SELECT * FROM tables", null)
         data.moveToFirst()
 
         for (i in 0 until data.count) {
@@ -66,8 +66,8 @@ class MainActivity : AppCompatActivity() {
             val date = data.getString(2)
             val members = toMemberList(data.getString(3))
             val status = toStatusList(data.getString(4))
-            val form = Form(id, title, date, members, status)
-            forms.add(form)
+            val form = Table(id, title, date, members, status)
+            tables.add(form)
             adapter.notifyDataSetChanged()
             data.moveToNext()
         }
@@ -76,7 +76,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun saveToDB(id: Long, status: String) {
         try {
-            db.execSQL("UPDATE forms SET status = '$status' WHERE id LIKE '$id'")
+            db.execSQL("UPDATE tables SET status = '$status' WHERE id LIKE '$id'")
         } catch (e: Exception) {
             Toast.makeText(this, "表格更新失敗", Toast.LENGTH_SHORT).show()
         }
@@ -110,7 +110,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun edit(id: Long, members: ArrayList<Int>, status: ArrayList<Boolean>) {
-        val i = Intent(this, EditFormActivity::class.java)
+        val i = Intent(this, EditTableActivity::class.java)
         val b = Bundle()
         b.putLong("id", id)
         b.putIntegerArrayList("members", members)
@@ -121,7 +121,7 @@ class MainActivity : AppCompatActivity() {
 
     fun delete(id: Long) {
         try {
-            db.execSQL("DELETE FROM forms WHERE id LIKE $id")
+            db.execSQL("DELETE FROM tables WHERE id LIKE $id")
             upDateList()
         } catch (e: Exception) {
             Toast.makeText(this, "表格刪除失敗", Toast.LENGTH_SHORT).show()
