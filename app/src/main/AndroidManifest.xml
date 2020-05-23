@@ -12,7 +12,9 @@
         android:roundIcon="@drawable/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".EditTableActivity"></activity>
+        <activity
+            android:name=".EditTableActivity"
+            android:screenOrientation="portrait"></activity>
         <activity android:name=".AddTableActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -21,9 +23,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="@string/id_app"/>
+            android:value="@string/id_app" />
     </application>
 
 </manifest>
