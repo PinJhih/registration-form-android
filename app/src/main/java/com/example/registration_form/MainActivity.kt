@@ -11,6 +11,9 @@ import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.Exception
 
@@ -41,6 +44,14 @@ class MainActivity : AppCompatActivity() {
         btn_start_edit.setOnClickListener {
             val i = Intent(this, AddTableActivity::class.java)
             startActivityForResult(i, 0)
+        }
+
+        MobileAds.initialize(this) {}
+        val adRequest = AdRequest.Builder().build()
+        adView_main.loadAd(adRequest)
+        adView_main.adListener = object : AdListener() {
+            override fun onAdFailedToLoad(errorCode: Int) {
+            }
         }
     }
 

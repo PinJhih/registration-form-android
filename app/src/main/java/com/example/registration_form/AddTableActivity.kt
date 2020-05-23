@@ -8,6 +8,9 @@ import android.icu.util.Calendar
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 import kotlinx.android.synthetic.main.activity_add_table.*
 import java.util.*
 
@@ -52,6 +55,14 @@ class AddTableActivity : AppCompatActivity() {
         btn_cancel.setOnClickListener {
             setResult(Activity.RESULT_CANCELED)
             finish()
+        }
+
+        MobileAds.initialize(this) {}
+        val adRequest = AdRequest.Builder().build()
+        adView_add.loadAd(adRequest)
+        adView_add.adListener = object : AdListener() {
+            override fun onAdFailedToLoad(errorCode: Int) {
+            }
         }
     }
 

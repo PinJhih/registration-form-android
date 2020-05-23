@@ -8,6 +8,9 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.GridLayoutManager
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 import kotlinx.android.synthetic.main.activity_edit_table.*
 
 class EditTableActivity : AppCompatActivity() {
@@ -37,6 +40,14 @@ class EditTableActivity : AppCompatActivity() {
         rv_members.layoutManager = gridLayoutManager
         adapter = MembersAdapter(this, members, status)
         rv_members.adapter = adapter
+
+        MobileAds.initialize(this) {}
+        val adRequest = AdRequest.Builder().build()
+        adView_edit.loadAd(adRequest)
+        adView_edit.adListener = object : AdListener() {
+            override fun onAdFailedToLoad(errorCode: Int) {
+            }
+        }
     }
 
     fun editStatus(index: Int, number: Int) {
