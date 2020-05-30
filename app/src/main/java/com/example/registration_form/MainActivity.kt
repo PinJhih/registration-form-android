@@ -36,7 +36,13 @@ class MainActivity : AppCompatActivity() {
         rv_forms.layoutManager = linearLayoutManager
         adapter = TablesAdapter(this, tables)
         rv_forms.adapter = adapter
-        upDateList()
+        Thread(Runnable {
+            try {
+                upDateList()
+            } catch (ex: Exception) {
+                Toast.makeText(this, "載入時發生錯誤", Toast.LENGTH_SHORT).show()
+            }
+        }).start()
 
         btn_start_edit.setOnClickListener {
             val i = Intent(this, AddTableActivity::class.java)
@@ -148,5 +154,10 @@ class MainActivity : AppCompatActivity() {
         clip = ClipData.newPlainText("msg", msg)
         clipboard.setPrimaryClip(clip)
         Toast.makeText(this, "已複製", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        db.close()
     }
 }
