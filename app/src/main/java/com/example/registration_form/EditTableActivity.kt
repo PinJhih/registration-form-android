@@ -41,6 +41,13 @@ class EditTableActivity : AppCompatActivity() {
         adapter = MembersAdapter(this, members, status)
         rv_members.adapter = adapter
 
+        btn_select_all.setOnClickListener {
+            editWholeTable(true)
+        }
+        btn_cancel_all.setOnClickListener {
+            editWholeTable(false)
+        }
+
         MobileAds.initialize(this) {}
         val adRequest = AdRequest.Builder().build()
         adView_edit.loadAd(adRequest)
@@ -57,6 +64,21 @@ class EditTableActivity : AppCompatActivity() {
             .setMessage("將${number}號的繳交狀態設為$msg?")
             .setPositiveButton("確認") { _, _ ->
                 status[index] = !status[index]
+                adapter.notifyDataSetChanged()
+            }
+            .setNegativeButton("取消") { _, _ -> }
+            .show()
+    }
+
+    private fun editWholeTable(goal: Boolean) {
+        val msg = if(goal) "\"已繳交\"" else "\"未繳交\""
+        AlertDialog.Builder(this)
+            .setTitle("確定修改?")
+            .setMessage("確定將所有成員設為 $msg 嗎?")
+            .setPositiveButton("確認") { _, _ ->
+                for (i in 0 until members.count()) {
+                    status[i] = goal
+                }
                 adapter.notifyDataSetChanged()
             }
             .setNegativeButton("取消") { _, _ -> }
