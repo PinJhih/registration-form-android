@@ -8,7 +8,6 @@ import android.database.sqlite.SQLiteDatabase
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.ads.AdListener
@@ -35,8 +34,6 @@ class MainActivity : AppCompatActivity() {
         val linearLayoutManager = LinearLayoutManager(this)
         linearLayoutManager.orientation = RecyclerView.VERTICAL
         rv_forms.layoutManager = linearLayoutManager
-        val decoration = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
-        rv_forms.addItemDecoration(decoration)
         adapter = TablesAdapter(this, tables)
         rv_forms.adapter = adapter
         upDateList()
