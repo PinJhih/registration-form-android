@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.ads.AdListener
@@ -72,21 +73,29 @@ class MainActivity : AppCompatActivity() {
         tables.clear()
         adapter.notifyDataSetChanged()
         val data = db.rawQuery("SELECT * FROM tables", null)
-        data.moveToFirst()
-
-        for (i in 0 until data.count) {
-            val id = data.getString(0).toLong()
-            val title = data.getString(1)
-            val date = data.getString(2)
-            val members = toMemberList(data.getString(3))
-            val status = toStatusList(data.getString(4))
-            val organization = data.getString(5)
-            val owner = data.getString(6)
-            val form = Table(id, title, date, members, status,organization, owner)
-            tables.add(form)
-            data.moveToNext()
+        if (data.count == 0) {
+            tables.clear()
+            adapter.notifyDataSetChanged()
+            tv_tip.isVisible = true
+            rv_forms.isVisible = false
+        } else {
+            data.moveToFirst()
+            for (i in 0 until data.count) {
+                val id = data.getString(0).toLong()
+                val title = data.getString(1)
+                val date = data.getString(2)
+                val members = toMemberList(data.getString(3))
+                val status = toStatusList(data.getString(4))
+                val organization = data.getString(5)
+                val owner = data.getString(6)
+                val form = Table(id, title, date, members, status, organization, owner)
+                tables.add(form)
+                data.moveToNext()
+            }
+            adapter.notifyDataSetChanged()
+            tv_tip.isVisible = false
+            rv_forms.isVisible = true
         }
-        adapter.notifyDataSetChanged()
         data.close()
     }
 
