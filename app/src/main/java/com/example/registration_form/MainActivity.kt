@@ -80,11 +80,13 @@ class MainActivity : AppCompatActivity() {
             val date = data.getString(2)
             val members = toMemberList(data.getString(3))
             val status = toStatusList(data.getString(4))
-            val form = Table(id, title, date, members, status)
+            val organization = data.getString(5)
+            val owner = data.getString(6)
+            val form = Table(id, title, date, members, status,organization, owner)
             tables.add(form)
-            adapter.notifyDataSetChanged()
             data.moveToNext()
         }
+        adapter.notifyDataSetChanged()
         data.close()
     }
 

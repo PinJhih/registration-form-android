@@ -80,6 +80,8 @@ class AddTableActivity : AppCompatActivity() {
         val endNumber = ed_max_num.text.toString().toInt()
         var members = ""
         var status = ""
+        val organization = "123"
+        val owner = "123"
 
         try {
             for (i in startNumber until endNumber + 1) {
@@ -89,8 +91,8 @@ class AddTableActivity : AppCompatActivity() {
                     members += ","
             }
             db.execSQL(
-                "INSERT INTO tables(id,title,date,members,status) VALUES(?,?,?,?,?)",
-                arrayOf<Any?>(id, title, date, members, status)
+                "INSERT INTO tables(id,title,date,members,status,organization,owner) VALUES(?,?,?,?,?,?,?)",
+                arrayOf<Any?>(id, title, date, members, status, organization, owner)
             )
         } catch (e: Exception) {
             Toast.makeText(this, "表格建立失敗", Toast.LENGTH_SHORT).show()

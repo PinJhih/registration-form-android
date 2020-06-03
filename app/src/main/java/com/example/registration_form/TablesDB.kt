@@ -16,7 +16,7 @@ class TablesDB(
     }
 
     override fun onCreate(db: SQLiteDatabase) {
-        db.execSQL("CREATE TABLE tables (id text PRIMARY KEY,title text NOT NULL,date text NOT NULL,members text NOT NULL,status text NOT NULL)")
+        db.execSQL("CREATE TABLE tables (id text PRIMARY KEY,title text NOT NULL,date text NOT NULL,members text NOT NULL,status text NOT NULL,organization text NOT NULL,owner text NOT NULL)")
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
