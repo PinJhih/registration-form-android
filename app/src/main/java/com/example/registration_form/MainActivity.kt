@@ -7,10 +7,13 @@ import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -61,28 +64,26 @@ class MainActivity : AppCompatActivity() {
             override fun onAdFailedToLoad(errorCode: Int) {
             }
         }
+    }
 
-        val spinnerItems = ArrayList<String>()
-        spinnerItems.add("新到舊")
-        spinnerItems.add("舊到新")
-        val spinnerAdapter =
-            ArrayAdapter(
-                this,
-                android.R.layout.simple_spinner_dropdown_item,
-                spinnerItems
-            )
-        spinner_sort.adapter = spinnerAdapter
-        spinner_sort.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-            }
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        super.onCreateOptionsMenu(menu)
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
 
-            override fun onItemSelected(
-                parent: AdapterView<*>?, view: View?, position: Int, id: Long
-            ) {
-                sortMode = if (position == 0) "DESC" else "ASC"
-                upDateList()
-            }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.sort) {
+            val options = arrayOf("新到舊", "舊到新")
+            AlertDialog.Builder(this)
+                .setTitle("排序方式")
+                .setItems(options) { _, i ->
+                    sortMode = if (i == 0) "DESC" else "ASC"
+                    upDateList()
+                }
+                .show()
         }
+        return true
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
