@@ -1,17 +1,12 @@
 package com.example.registration_form
 
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
-import android.content.Intent
+import android.app.Activity
+import android.content.*
 import android.database.sqlite.SQLiteDatabase
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
@@ -29,8 +24,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var adapter: TablesAdapter
     private lateinit var clipboard: ClipboardManager
     private lateinit var clip: ClipData
+    private lateinit var userInfo: SharedPreferences
+    private lateinit var sortMode: String
     private val tables = ArrayList<Table>()
-    private var sortMode = "DESC"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +34,8 @@ class MainActivity : AppCompatActivity() {
 
         db = TablesDB(this).writableDatabase
         clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-
+        userInfo = getSharedPreferences("userInfo", Activity.MODE_PRIVATE)
+        sortMode = userInfo.getString("sortMode", "DESC")!!
         val linearLayoutManager = LinearLayoutManager(this)
         linearLayoutManager.orientation = RecyclerView.VERTICAL
         rv_forms.layoutManager = linearLayoutManager
@@ -80,6 +77,9 @@ class MainActivity : AppCompatActivity() {
                 .setItems(options) { _, i ->
                     sortMode = if (i == 0) "DESC" else "ASC"
                     upDateList()
+                    val editor = userInfo.edit()
+                    editor.putString("sortMode", sortMode)
+                    editor.apply()
                 }
                 .show()
         }
