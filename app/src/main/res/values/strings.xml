@@ -16,6 +16,7 @@
     <string name="cancel_all">全部取消</string>
     <string name="tip">未建立表格\n點擊右下角按鈕建立登記表</string>
     <string name="sort">排序方式</string>
+    <string name="delete_all">刪除所有表格</string>
     <string name="id_app">ca-app-pub-3142349516815132~8409143027</string>
     <string name="id_ad_main_page">ca-app-pub-3940256099942544/6300978111</string>
     <string name="id_ad_add_page">ca-app-pub-3940256099942544/6300978111</string>

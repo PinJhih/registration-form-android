@@ -70,18 +70,29 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.sort) {
-            val options = arrayOf("新到舊", "舊到新")
-            AlertDialog.Builder(this)
-                .setTitle("排序方式")
-                .setItems(options) { _, i ->
-                    sortMode = if (i == 0) "DESC" else "ASC"
-                    upDateList()
-                    val editor = userInfo.edit()
-                    editor.putString("sortMode", sortMode)
-                    editor.apply()
-                }
-                .show()
+        when (item.itemId) {
+            R.id.sort -> {
+                val options = arrayOf("新到舊", "舊到新")
+                AlertDialog.Builder(this)
+                    .setTitle("排序方式")
+                    .setItems(options) { _, i ->
+                        sortMode = if (i == 0) "DESC" else "ASC"
+                        upDateList()
+                        val editor = userInfo.edit()
+                        editor.putString("sortMode", sortMode)
+                        editor.apply()
+                    }
+                    .show()
+            }
+            R.id.deleteAll -> {
+                AlertDialog.Builder(this)
+                    .setTitle("確認刪除?")
+                    .setPositiveButton("確認") { _, _ ->
+                        deleteAll()
+                    }
+                    .setNegativeButton("取消") { _, _ -> }
+                    .show()
+            }
         }
         return true
     }
@@ -124,6 +135,16 @@ class MainActivity : AppCompatActivity() {
             rv_forms.isVisible = true
         }
         data.close()
+    }
+
+    private fun deleteAll() {
+        try {
+            db.execSQL("DROP TABLE IF EXISTS tables")
+            upDateList()
+            Toast.makeText(this, "已刪除所有表格", Toast.LENGTH_SHORT).show()
+        }catch (e:Exception){
+            Toast.makeText(this,"刪除失敗",Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun saveToDB(id: Long, status: String) {
