@@ -139,7 +139,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun deleteAll() {
         try {
-            db.execSQL("DROP TABLE IF EXISTS tables")
+            db.execSQL("DELETE FROM tables")
             upDateList()
             Toast.makeText(this, "已刪除所有表格", Toast.LENGTH_SHORT).show()
         }catch (e:Exception){
