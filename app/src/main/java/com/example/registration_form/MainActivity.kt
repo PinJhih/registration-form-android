@@ -99,12 +99,14 @@ class MainActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        data?.extras?.let {
-            val id = it.getLong("id")
-            val status = it.getString("status")!!
-            saveToDB(id, status)
+        if (resultCode == Activity.RESULT_OK) {
+            data?.extras?.let {
+                val id = it.getLong("id")
+                val status = it.getString("status")!!
+                saveToDB(id, status)
+            }
+            upDateList()
         }
-        upDateList()
     }
 
     private fun upDateList() {
@@ -142,8 +144,8 @@ class MainActivity : AppCompatActivity() {
             db.execSQL("DELETE FROM tables")
             upDateList()
             Toast.makeText(this, "已刪除所有表格", Toast.LENGTH_SHORT).show()
-        }catch (e:Exception){
-            Toast.makeText(this,"刪除失敗",Toast.LENGTH_SHORT).show()
+        } catch (e: Exception) {
+            Toast.makeText(this, "刪除失敗", Toast.LENGTH_SHORT).show()
         }
     }
 

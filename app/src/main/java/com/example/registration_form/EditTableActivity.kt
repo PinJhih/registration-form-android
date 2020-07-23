@@ -71,7 +71,7 @@ class EditTableActivity : AppCompatActivity() {
     }
 
     private fun editWholeTable(goal: Boolean) {
-        val msg = if(goal) "\"已繳交\"" else "\"未繳交\""
+        val msg = if (goal) "\"已繳交\"" else "\"未繳交\""
         AlertDialog.Builder(this)
             .setTitle("確定修改?")
             .setMessage("確定將所有成員設為 $msg 嗎?")
@@ -85,18 +85,36 @@ class EditTableActivity : AppCompatActivity() {
             .show()
     }
 
+    private fun saveAndFinish() {
+        AlertDialog.Builder(this)
+            .setTitle("儲存")
+            .setMessage("確定儲存變更嗎?")
+            .setPositiveButton("儲存") { _, _ ->
+                val intent = Intent()
+                val b = Bundle()
+                var s = ""
+                for (i in 0 until status.size)
+                    s += if (status[i]) "t" else "f"
+                b.putLong("id", id)
+                b.putString("status", s)
+                intent.putExtras(b)
+                setResult(Activity.RESULT_OK, intent)
+                finish()
+            }
+            .setNegativeButton("返回") { _, _ -> }
+            .setNeutralButton("放棄變更") { _, _ ->
+                finish()
+            }
+            .show()
+    }
+
+    override fun onBackPressed() {
+        saveAndFinish()
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.finish) {
-            val intent = Intent()
-            val b = Bundle()
-            var s = ""
-            for (i in 0 until status.size)
-                s += if (status[i]) "t" else "f"
-            b.putLong("id", id)
-            b.putString("status", s)
-            intent.putExtras(b)
-            setResult(Activity.RESULT_OK, intent)
-            finish()
+            saveAndFinish()
         }
         return true
     }
