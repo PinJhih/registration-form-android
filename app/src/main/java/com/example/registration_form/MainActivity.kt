@@ -126,9 +126,10 @@ class MainActivity : AppCompatActivity() {
                 val date = data.getString(2)
                 val members = toMemberList(data.getString(3))
                 val status = toStatusList(data.getString(4))
-                val organization = data.getString(5)
-                val owner = data.getString(6)
-                val form = Table(id, title, date, members, status, organization, owner)
+                val paid = data.getInt(5)
+                val organization = data.getString(6)
+                val owner = data.getString(7)
+                val form = Table(id, title, date, members, status, paid,organization, owner)
                 tables.add(form)
                 data.moveToNext()
             }
@@ -168,27 +169,26 @@ class MainActivity : AppCompatActivity() {
         return list
     }
 
-    private fun toMemberList(members: String): ArrayList<Int> {
-        val list = ArrayList<Int>()
-        var member = 0
+    private fun toMemberList(members: String): ArrayList<String> {
+        val list = ArrayList<String>()
+        var member = ""
 
         for (i in members.indices + 1) {
             if (i == members.length || members[i] == ',') {
                 list.add(member)
-                member = 0
+                member = ""
             } else {
-                member *= 10
-                member += members[i].toInt() - 48
+                member += members[i]
             }
         }
         return list
     }
 
-    fun edit(id: Long, members: ArrayList<Int>, status: ArrayList<Boolean>) {
+    fun edit(id: Long, members: ArrayList<String>, status: ArrayList<Boolean>) {
         val i = Intent(this, EditTableActivity::class.java)
         val b = Bundle()
         b.putLong("id", id)
-        b.putIntegerArrayList("members", members)
+        b.putStringArrayList("members", members)
         b.putBooleanArray("status", status.toBooleanArray())
         i.putExtras(b)
         startActivityForResult(i, 1)
@@ -203,11 +203,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun copy(members: ArrayList<Int>, status: ArrayList<Boolean>) {
+    fun copy(members: ArrayList<String>, status: ArrayList<Boolean>) {
         var msg = ""
         for (i in 0 until members.size) {
             if (!status[i]) {
-                msg += "${members[i]}"
+                msg += members[i]
                 if (i + 1 != members.size)
                     msg += ",\t"
             }

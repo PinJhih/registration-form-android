@@ -17,7 +17,7 @@ class EditTableActivity : AppCompatActivity() {
 
     private lateinit var gridLayoutManager: GridLayoutManager
     private lateinit var adapter: MembersAdapter
-    private var members = ArrayList<Int>()
+    private var members = ArrayList<String>()
     private var status = ArrayList<Boolean>()
     private var id = 0L
 
@@ -27,7 +27,7 @@ class EditTableActivity : AppCompatActivity() {
 
         intent?.extras?.let {
             id = it.getLong("id")
-            val m = it.getIntegerArrayList("members")!!
+            val m = it.getStringArrayList("members")!!
             val s = it.getBooleanArray("status")!!
 
             for (i in 0 until m.size) {
@@ -57,7 +57,7 @@ class EditTableActivity : AppCompatActivity() {
         }
     }
 
-    fun editStatus(index: Int, number: Int) {
+    fun editStatus(index: Int, number: String) {
         val msg = if (!status[index]) "已繳交" else "未繳交"
         AlertDialog.Builder(this)
             .setTitle("確認修改")
@@ -97,6 +97,7 @@ class EditTableActivity : AppCompatActivity() {
                     s += if (status[i]) "t" else "f"
                 b.putLong("id", id)
                 b.putString("status", s)
+                b.putInt("paid",status.count())
                 intent.putExtras(b)
                 setResult(Activity.RESULT_OK, intent)
                 finish()

@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.item_member.view.*
 
 class MembersAdapter(
     private val context: Context,
-    private val members: ArrayList<Int>,
+    private val members: ArrayList<String>,
     private val status: ArrayList<Boolean>
 ) :
     RecyclerView.Adapter<MembersAdapter.ViewHolder>() {
@@ -27,7 +27,7 @@ class MembersAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val itemView = holder.itemView
 
-        itemView.btn_member.text = "${members[position]}"
+        itemView.btn_member.text = members[position]
         itemView.btn_member.setTextColor(
             if (status[position]) Color.parseColor("#3C783C")
             else Color.parseColor("#AA4343")
