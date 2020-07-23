@@ -26,6 +26,7 @@ class EditTableActivity : AppCompatActivity() {
         setContentView(R.layout.activity_edit_table)
 
         intent?.extras?.let {
+            title = it.getString("title")
             id = it.getLong("id")
             val m = it.getStringArrayList("members")!!
             val s = it.getBooleanArray("status")!!

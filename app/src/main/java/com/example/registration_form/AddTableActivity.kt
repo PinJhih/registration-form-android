@@ -51,11 +51,12 @@ class AddTableActivity : AppCompatActivity() {
                 finish()
             }
         }
-
         btn_cancel.setOnClickListener {
             setResult(Activity.RESULT_CANCELED)
             finish()
         }
+
+        title = "新增"
 
         MobileAds.initialize(this) {}
         val adRequest = AdRequest.Builder().build()

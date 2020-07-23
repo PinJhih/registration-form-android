@@ -36,6 +36,7 @@ class TablesAdapter(
                     0 -> (context as MainActivity).edit(
                         tables[position].id,
                         tables[position].memberList,
+                        tables[position].title,
                         tables[position].status
                     )
                     1 -> (context as MainActivity).copy(

@@ -186,10 +186,11 @@ class MainActivity : AppCompatActivity() {
         return list
     }
 
-    fun edit(id: Long, members: ArrayList<String>, status: ArrayList<Boolean>) {
+    fun edit(id: Long, members: ArrayList<String>, title: String, status: ArrayList<Boolean>) {
         val i = Intent(this, EditTableActivity::class.java)
         val b = Bundle()
         b.putLong("id", id)
+        b.putString("title", title)
         b.putStringArrayList("members", members)
         b.putBooleanArray("status", status.toBooleanArray())
         i.putExtras(b)
