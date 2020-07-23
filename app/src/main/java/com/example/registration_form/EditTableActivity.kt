@@ -97,7 +97,7 @@ class EditTableActivity : AppCompatActivity() {
                     s += if (status[i]) "t" else "f"
                 b.putLong("id", id)
                 b.putString("status", s)
-                b.putInt("paid",status.count())
+                b.putInt("paid", getPaidCount())
                 intent.putExtras(b)
                 setResult(Activity.RESULT_OK, intent)
                 finish()
@@ -107,6 +107,14 @@ class EditTableActivity : AppCompatActivity() {
                 finish()
             }
             .show()
+    }
+
+    private fun getPaidCount(): Int {
+        var paid = 0
+        for (i in 0 until status.count())
+            if (status[i])
+                paid++
+        return paid
     }
 
     override fun onBackPressed() {

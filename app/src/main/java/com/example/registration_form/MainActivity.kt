@@ -103,7 +103,8 @@ class MainActivity : AppCompatActivity() {
             data?.extras?.let {
                 val id = it.getLong("id")
                 val status = it.getString("status")!!
-                saveToDB(id, status)
+                val paid = it.getInt("paid")
+                saveToDB(id, status, paid)
             }
             upDateList()
         }
@@ -119,6 +120,8 @@ class MainActivity : AppCompatActivity() {
             tv_tip.isVisible = true
             rv_forms.isVisible = false
         } else {
+            tv_tip.isVisible = false
+            rv_forms.isVisible = true
             data.moveToFirst()
             for (i in 0 until data.count) {
                 val id = data.getString(0).toLong()
@@ -129,13 +132,11 @@ class MainActivity : AppCompatActivity() {
                 val paid = data.getInt(5)
                 val organization = data.getString(6)
                 val owner = data.getString(7)
-                val form = Table(id, title, date, members, status, paid,organization, owner)
+                val form = Table(id, title, date, members, status, paid, organization, owner)
                 tables.add(form)
                 data.moveToNext()
+                adapter.notifyDataSetChanged()
             }
-            adapter.notifyDataSetChanged()
-            tv_tip.isVisible = false
-            rv_forms.isVisible = true
         }
         data.close()
     }
@@ -150,9 +151,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun saveToDB(id: Long, status: String) {
+    private fun saveToDB(id: Long, status: String, paid: Int) {
         try {
             db.execSQL("UPDATE tables SET status = '$status' WHERE id LIKE '$id'")
+            db.execSQL("UPDATE tables SET paid = '$paid' WHERE id LIKE '$id'")
         } catch (e: Exception) {
             Toast.makeText(this, "表格更新失敗", Toast.LENGTH_SHORT).show()
         }

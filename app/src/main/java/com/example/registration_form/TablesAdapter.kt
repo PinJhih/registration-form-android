@@ -28,11 +28,7 @@ class TablesAdapter(
     override fun getItemCount() = tables.size
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val itemView = holder.itemView
-        var numPaid = 0
-        for (i in tables[position].status)
-            if (i)
-                numPaid++
-        val numUnpaid = tables[position].memberList.size - numPaid
+        val numUnpaid = tables[position].memberList.size - tables[position].paid
         val list = arrayOf("編輯表格", "複製未繳交成員名單", "刪除表格")
         val alertDialog = AlertDialog.Builder(context)
             .setItems(list) { _, i ->
@@ -49,7 +45,7 @@ class TablesAdapter(
                     else -> (context as MainActivity).delete(tables[position].id)
                 }
             }
-        val textPaid = SpannableString("已繳交\n$numPaid")
+        val textPaid = SpannableString("已繳交\n${tables[position].paid}")
         textPaid.setSpan(
             ForegroundColorSpan(Color.BLACK),
             0, 3,
