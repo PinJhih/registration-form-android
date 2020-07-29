@@ -13,10 +13,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".EditTableActivity"
+            android:name=".view.activity.EditTableActivity"
             android:screenOrientation="portrait"></activity>
-        <activity android:name=".AddTableActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".view.activity.AddTableActivity" />
+        <activity android:name=".view.activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

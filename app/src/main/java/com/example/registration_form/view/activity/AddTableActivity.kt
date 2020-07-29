@@ -1,4 +1,4 @@
-package com.example.registration_form
+package com.example.registration_form.view.activity
 
 import android.app.Activity
 import android.content.SharedPreferences
@@ -8,6 +8,8 @@ import android.icu.util.Calendar
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import com.example.registration_form.R
+import com.example.registration_form.TablesDB
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds

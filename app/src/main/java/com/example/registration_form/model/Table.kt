@@ -1,4 +1,4 @@
-package com.example.registration_form
+package com.example.registration_form.model
 
 data class Table(
     var id: Long,

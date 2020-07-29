@@ -1,4 +1,4 @@
-package com.example.registration_form
+package com.example.registration_form.view.activity
 
 import android.app.Activity
 import android.content.*
@@ -12,6 +12,10 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.registration_form.R
+import com.example.registration_form.view.adapter.TablesAdapter
+import com.example.registration_form.TablesDB
+import com.example.registration_form.model.Table
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds

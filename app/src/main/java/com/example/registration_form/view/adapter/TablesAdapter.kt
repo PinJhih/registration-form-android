@@ -1,4 +1,4 @@
-package com.example.registration_form
+package com.example.registration_form.view.adapter
 
 import android.content.Context
 import android.graphics.Color
@@ -10,6 +10,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
+import com.example.registration_form.R
+import com.example.registration_form.model.Table
+import com.example.registration_form.view.activity.MainActivity
 import kotlinx.android.synthetic.main.item_table.view.*
 
 class TablesAdapter(

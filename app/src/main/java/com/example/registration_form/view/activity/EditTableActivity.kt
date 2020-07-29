@@ -1,4 +1,4 @@
-package com.example.registration_form
+package com.example.registration_form.view.activity
 
 import android.app.Activity
 import android.content.Intent
@@ -8,6 +8,8 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.registration_form.view.adapter.MembersAdapter
+import com.example.registration_form.R
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
