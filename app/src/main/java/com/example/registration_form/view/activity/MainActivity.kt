@@ -188,9 +188,9 @@ class MainActivity : AppCompatActivity() {
         var msg = ""
         for (i in 0 until members.size) {
             if (status[i] == 't') {
-                msg += members[i]
-                if (i + 1 != members.size)
+                if (msg != "")
                     msg += ",\t"
+                msg += members[i]
             }
         }
         clip = ClipData.newPlainText("msg", msg)
