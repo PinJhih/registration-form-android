@@ -46,7 +46,14 @@ class TablesAdapter(
                         tables[position].memberList.toArrayList(),
                         tables[position].status
                     )
-                    else -> (context as MainActivity).delete(tables[position].id)
+                    else -> AlertDialog.Builder(context)
+                        .setTitle("刪除表格")
+                        .setMessage("確定要刪除表格嗎?")
+                        .setPositiveButton("是") { _, _ ->
+                            (context as MainActivity).delete(tables[position].id)
+                        }
+                        .setNegativeButton("否") { _, _ -> }
+                        .show()
                 }
             }
         val textPaid = SpannableString("已繳交\n${tables[position].paid}")
