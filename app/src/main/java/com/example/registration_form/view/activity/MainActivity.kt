@@ -116,7 +116,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun upDateList() {
         tables.clear()
-        adapter.notifyDataSetChanged()
         val data = db.rawQuery("SELECT * FROM tables ORDER BY date $sortMode", null)
         if (data.count == 0) {
             tables.clear()
@@ -139,8 +138,8 @@ class MainActivity : AppCompatActivity() {
                 val form = Table(id, title, date, members, status, paid, organization, owner)
                 tables.add(form)
                 data.moveToNext()
-                adapter.notifyDataSetChanged()
             }
+            adapter.notifyDataSetChanged()
         }
         data.close()
     }
