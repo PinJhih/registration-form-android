@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.item_member.view.*
 class MembersAdapter(
     private val context: Context,
     private val members: ArrayList<String>,
-    private val status: ArrayList<Boolean>
+    private val status: ArrayList<Char>
 ) :
     RecyclerView.Adapter<MembersAdapter.ViewHolder>() {
     class ViewHolder(v: View) : RecyclerView.ViewHolder(v)
@@ -31,11 +31,11 @@ class MembersAdapter(
 
         itemView.btn_member.text = members[position]
         itemView.btn_member.setTextColor(
-            if (status[position]) Color.parseColor("#3C783C")
+            if (status[position] == 't') Color.parseColor("#3C783C")
             else Color.parseColor("#AA4343")
         )
         itemView.btn_member.setBackgroundResource(
-            if (status[position]) R.drawable.bg_round_button_green
+            if (status[position] == 't') R.drawable.bg_round_button_green
             else R.drawable.bg_round_button_red
         )
         itemView.btn_member.setOnClickListener {

@@ -132,7 +132,7 @@ class MainActivity : AppCompatActivity() {
                 val title = data.getString(1)
                 val date = data.getString(2)
                 val members = toMemberList(data.getString(3))
-                val status = toStatusList(data.getString(4))
+                val status = data.getString(4)
                 val paid = data.getInt(5)
                 val organization = data.getString(6)
                 val owner = data.getString(7)
@@ -164,17 +164,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun toStatusList(status: String): ArrayList<Boolean> {
-        val list = ArrayList<Boolean>()
-        for (i in status) {
-            if (i == 't')
-                list.add(true)
-            else
-                list.add(false)
-        }
-        return list
-    }
-
     private fun toMemberList(members: String): ArrayList<String> {
         val list = ArrayList<String>()
         var member = ""
@@ -190,13 +179,13 @@ class MainActivity : AppCompatActivity() {
         return list
     }
 
-    fun edit(id: Long, members: ArrayList<String>, title: String, status: ArrayList<Boolean>) {
+    fun edit(id: Long, members: ArrayList<String>, title: String, status: String) {
         val i = Intent(this, EditTableActivity::class.java)
         val b = Bundle()
         b.putLong("id", id)
         b.putString("title", title)
         b.putStringArrayList("members", members)
-        b.putBooleanArray("status", status.toBooleanArray())
+        b.putString("status", status)
         i.putExtras(b)
         startActivityForResult(i, 1)
     }
@@ -210,10 +199,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun copy(members: ArrayList<String>, status: ArrayList<Boolean>) {
+    fun copy(members: ArrayList<String>, status: String) {
         var msg = ""
         for (i in 0 until members.size) {
-            if (!status[i]) {
+            if (status[i] == 't') {
                 msg += members[i]
                 if (i + 1 != members.size)
                     msg += ",\t"

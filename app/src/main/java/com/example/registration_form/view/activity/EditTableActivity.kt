@@ -20,7 +20,7 @@ class EditTableActivity : AppCompatActivity() {
     private lateinit var gridLayoutManager: GridLayoutManager
     private lateinit var adapter: MembersAdapter
     private var members = ArrayList<String>()
-    private var status = ArrayList<Boolean>()
+    private var status = ArrayList<Char>()
     private var id = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,8 +31,7 @@ class EditTableActivity : AppCompatActivity() {
             title = it.getString("title")
             id = it.getLong("id")
             val m = it.getStringArrayList("members")!!
-            val s = it.getBooleanArray("status")!!
-
+            val s = it.getString("status")!!
             for (i in 0 until m.size) {
                 members.add(m[i])
                 status.add(s[i])
@@ -45,10 +44,10 @@ class EditTableActivity : AppCompatActivity() {
         rv_members.adapter = adapter
 
         btn_select_all.setOnClickListener {
-            editWholeTable(true)
+            editWholeTable('t')
         }
         btn_cancel_all.setOnClickListener {
-            editWholeTable(false)
+            editWholeTable('f')
         }
 
         MobileAds.initialize(this) {}
@@ -61,26 +60,26 @@ class EditTableActivity : AppCompatActivity() {
     }
 
     fun editStatus(index: Int, number: String) {
-        val msg = if (!status[index]) "已繳交" else "未繳交"
+        val msg = if (status[index] == 'f') "已繳交" else "未繳交"
         AlertDialog.Builder(this)
             .setTitle("確認修改")
             .setMessage("將${number}號的繳交狀態設為$msg?")
             .setPositiveButton("確認") { _, _ ->
-                status[index] = !status[index]
+                status[index] = if (status[index] == 't') 'f' else 't'
                 adapter.notifyDataSetChanged()
             }
             .setNegativeButton("取消") { _, _ -> }
             .show()
     }
 
-    private fun editWholeTable(goal: Boolean) {
-        val msg = if (goal) "\"已繳交\"" else "\"未繳交\""
+    private fun editWholeTable(value: Char) {
+        val msg = if (value == 't') "\"已繳交\"" else "\"未繳交\""
         AlertDialog.Builder(this)
             .setTitle("確定修改?")
             .setMessage("確定將所有成員設為 $msg 嗎?")
             .setPositiveButton("確認") { _, _ ->
                 for (i in 0 until members.count()) {
-                    status[i] = goal
+                    status[i] = value
                 }
                 adapter.notifyDataSetChanged()
             }
@@ -96,8 +95,8 @@ class EditTableActivity : AppCompatActivity() {
                 val intent = Intent()
                 val b = Bundle()
                 var s = ""
-                for (i in 0 until status.size)
-                    s += if (status[i]) "t" else "f"
+                for (i in status)
+                    s += i
                 b.putLong("id", id)
                 b.putString("status", s)
                 b.putInt("paid", getPaidCount())
@@ -115,7 +114,7 @@ class EditTableActivity : AppCompatActivity() {
     private fun getPaidCount(): Int {
         var paid = 0
         for (i in 0 until status.count())
-            if (status[i])
+            if (status[i] == 't')
                 paid++
         return paid
     }

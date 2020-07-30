@@ -5,7 +5,7 @@ data class Table(
     var title: String,
     var date: String,
     var memberList: ArrayList<String>,
-    var status: ArrayList<Boolean>,
+    var status: String,
     var paid: Int,
     var organization: String,
     var owner: String
