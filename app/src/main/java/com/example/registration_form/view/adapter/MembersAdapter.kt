@@ -31,12 +31,18 @@ class MembersAdapter(
 
         itemView.btn_member.text = members[position]
         itemView.btn_member.setTextColor(
-            if (status[position] == 't') Color.parseColor("#3C783C")
-            else Color.parseColor("#AA4343")
+            when (status[position]) {
+                'd' -> Color.parseColor("#D91B1B1B")
+                't' -> Color.parseColor("#3C783C")
+                else -> Color.parseColor("#AA4343")
+            }
         )
         itemView.btn_member.setBackgroundResource(
-            if (status[position] == 't') R.drawable.bg_round_button_green
-            else R.drawable.bg_round_button_red
+            when (status[position]) {
+                'd' -> R.drawable.bg_round_button_gray
+                't' -> R.drawable.bg_round_button_green
+                else -> R.drawable.bg_round_button_red
+            }
         )
         itemView.btn_member.setOnClickListener {
             (context as EditTableActivity).editStatus(position, members[position])

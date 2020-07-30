@@ -69,6 +69,10 @@ class EditTableActivity : AppCompatActivity() {
                 adapter.notifyDataSetChanged()
             }
             .setNegativeButton("取消") { _, _ -> }
+            .setNeutralButton("移除成員") { _, _ ->
+                status[index] = 'd'
+                adapter.notifyDataSetChanged()
+            }
             .show()
     }
 
