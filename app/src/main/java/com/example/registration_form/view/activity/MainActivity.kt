@@ -186,7 +186,7 @@ class MainActivity : AppCompatActivity() {
     fun copy(members: ArrayList<String>, status: String) {
         var msg = ""
         for (i in 0 until members.size) {
-            if (status[i] == 't') {
+            if (status[i] == 'f') {
                 if (msg != "")
                     msg += ",\t"
                 msg += members[i]
