@@ -4,7 +4,7 @@ data class Table(
     var id: Long,
     var title: String,
     var date: String,
-    var memberList: ArrayList<String>,
+    var memberList: String,
     var status: String,
     var paid: Int,
     var organization: String,

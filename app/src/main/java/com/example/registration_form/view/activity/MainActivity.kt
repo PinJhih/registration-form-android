@@ -131,7 +131,7 @@ class MainActivity : AppCompatActivity() {
                 val id = data.getString(0).toLong()
                 val title = data.getString(1)
                 val date = data.getString(2)
-                val members = toMemberList(data.getString(3))
+                val members = data.getString(3)
                 val status = data.getString(4)
                 val paid = data.getInt(5)
                 val organization = data.getString(6)
@@ -162,21 +162,6 @@ class MainActivity : AppCompatActivity() {
         } catch (e: Exception) {
             Toast.makeText(this, "表格更新失敗", Toast.LENGTH_SHORT).show()
         }
-    }
-
-    private fun toMemberList(members: String): ArrayList<String> {
-        val list = ArrayList<String>()
-        var member = ""
-
-        for (i in members.indices + 1) {
-            if (i == members.length || members[i] == ',') {
-                list.add(member)
-                member = ""
-            } else {
-                member += members[i]
-            }
-        }
-        return list
     }
 
     fun edit(id: Long, members: ArrayList<String>, title: String, status: String) {

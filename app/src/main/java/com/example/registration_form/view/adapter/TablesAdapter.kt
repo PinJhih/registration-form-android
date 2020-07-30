@@ -31,19 +31,19 @@ class TablesAdapter(
     override fun getItemCount() = tables.size
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val itemView = holder.itemView
-        val numUnpaid = tables[position].memberList.size - tables[position].paid
+        val numUnpaid = tables[position].status.length - tables[position].paid
         val list = arrayOf("編輯表格", "複製未繳交成員名單", "刪除表格")
         val alertDialog = AlertDialog.Builder(context)
             .setItems(list) { _, i ->
                 when (i) {
                     0 -> (context as MainActivity).edit(
                         tables[position].id,
-                        tables[position].memberList,
+                        tables[position].memberList.toArrayList(),
                         tables[position].title,
                         tables[position].status
                     )
                     1 -> (context as MainActivity).copy(
-                        tables[position].memberList,
+                        tables[position].memberList.toArrayList(),
                         tables[position].status
                     )
                     else -> (context as MainActivity).delete(tables[position].id)
@@ -70,5 +70,20 @@ class TablesAdapter(
         itemView.setOnClickListener {
             alertDialog.show()
         }
+    }
+
+    private fun String.toArrayList(): ArrayList<String> {
+        val list = ArrayList<String>()
+        var member = ""
+
+        for (i in this.indices + 1) {
+            if (i == this.length || this[i] == ',') {
+                list.add(member)
+                member = ""
+            } else {
+                member += this[i]
+            }
+        }
+        return list
     }
 }
