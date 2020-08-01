@@ -1,12 +1,28 @@
 package com.example.registration_form.model
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "Tables")
 data class Table(
-    var id: Long,
-    var title: String,
-    var date: String,
-    var memberList: String,
-    var status: String,
-    var paid: Int,
-    var organization: String,
-    var owner: String
+    @PrimaryKey
+    @ColumnInfo(name = "id")
+    var id: Long = 0L,
+    @ColumnInfo(name = "title")
+    var title: String = "",
+    @ColumnInfo(name = "date")
+    var date: String = "",
+    @ColumnInfo(name = "member")
+    var members: String = "",
+    @ColumnInfo(name = "status")
+    var status: String = "",
+    @ColumnInfo(name = "memberCount")
+    var memberCount: Int = 0,
+    @ColumnInfo(name = "paidCount")
+    var paidCount: Int = 0,
+    @ColumnInfo(name = "organization")
+    var organization: String = "",
+    @ColumnInfo(name = "owner")
+    var owner: String = ""
 )
