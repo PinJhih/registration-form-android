@@ -3,8 +3,8 @@ package com.example.registration_form.view.activity
 import android.app.Activity
 import android.content.*
 import android.database.sqlite.SQLiteDatabase
+import android.os.*
 import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.registration_form.R
 import com.example.registration_form.view.adapter.TablesAdapter
 import com.example.registration_form.TablesDB
+import com.example.registration_form.database.TablesDataBase
 import com.example.registration_form.model.Table
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
@@ -24,34 +25,32 @@ import kotlin.Exception
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var db: SQLiteDatabase
+    private lateinit var db: TablesDataBase
     private lateinit var adapter: TablesAdapter
     private lateinit var clipboard: ClipboardManager
     private lateinit var clip: ClipData
     private lateinit var userInfo: SharedPreferences
-    private lateinit var sortMode: String
+    private lateinit var orderBy: String
     private val tables = ArrayList<Table>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        db = TablesDB(this).writableDatabase
+        db = TablesDataBase.getInstance(this)
         clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         userInfo = getSharedPreferences("userInfo", Activity.MODE_PRIVATE)
-        sortMode = userInfo.getString("sortMode", "DESC")!!
+        orderBy = userInfo.getString("sortMode", "date DESC")!!
         val linearLayoutManager = LinearLayoutManager(this)
         linearLayoutManager.orientation = RecyclerView.VERTICAL
         rv_forms.layoutManager = linearLayoutManager
         adapter = TablesAdapter(this, tables)
         rv_forms.adapter = adapter
-        Thread(Runnable {
-            try {
-                upDateList()
-            } catch (ex: Exception) {
-                Toast.makeText(this, "載入時發生錯誤", Toast.LENGTH_SHORT).show()
-            }
-        }).start()
+        try {
+            upDateList()
+        } catch (E: java.lang.Exception) {
+            Toast.makeText(this, "載入時發生錯誤", Toast.LENGTH_SHORT).show()
+        }
 
         btn_start_edit.setOnClickListener {
             val i = Intent(this, AddTableActivity::class.java)
@@ -80,10 +79,10 @@ class MainActivity : AppCompatActivity() {
                 AlertDialog.Builder(this)
                     .setTitle("排序方式")
                     .setItems(options) { _, i ->
-                        sortMode = if (i == 0) "DESC" else "ASC"
+                        orderBy = if (i == 0) "date DESC" else "date ASC"
                         upDateList()
                         val editor = userInfo.edit()
-                        editor.putString("sortMode", sortMode)
+                        editor.putString("sortMode", orderBy)
                         editor.apply()
                     }
                     .show()
@@ -115,39 +114,35 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun upDateList() {
-        tables.clear()
-        val data = db.rawQuery("SELECT * FROM tables ORDER BY date $sortMode", null)
-        if (data.count == 0) {
-            tables.clear()
+        val handler = Handler {
             adapter.notifyDataSetChanged()
-            tv_tip.isVisible = true
-            rv_forms.isVisible = false
-        } else {
-            tv_tip.isVisible = false
-            rv_forms.isVisible = true
-            data.moveToFirst()
-            for (i in 0 until data.count) {
-                val id = data.getString(0).toLong()
-                val title = data.getString(1)
-                val date = data.getString(2)
-                val members = data.getString(3)
-                val status = data.getString(4)
-                val paid = data.getInt(5)
-                val organization = data.getString(6)
-                val owner = data.getString(7)
-                val form = Table(id, title, date, members, status, paid, organization, owner)
-                tables.add(form)
-                data.moveToNext()
+            if (tables.size == 0) {
+                tv_tip.isVisible = true
+                rv_forms.isVisible = false
+            } else {
+                tv_tip.isVisible = false
+                rv_forms.isVisible = true
             }
-            adapter.notifyDataSetChanged()
+            true
         }
-        data.close()
+        AsyncTask.execute {
+            tables.clear()
+            val t = db.tableDao().getTableList(orderBy)
+            tables.addAll(t)
+            val msg = Message()
+            msg.what = 1
+            handler.sendMessage(msg)
+        }
     }
 
     private fun deleteAll() {
         try {
-            db.execSQL("DELETE FROM tables")
-            upDateList()
+            Thread {
+                db.tableDao().deleteAll()
+                runOnUiThread {
+                    upDateList()
+                }
+            }.start()
             Toast.makeText(this, "已刪除所有表格", Toast.LENGTH_SHORT).show()
         } catch (e: Exception) {
             Toast.makeText(this, "刪除失敗", Toast.LENGTH_SHORT).show()
@@ -156,8 +151,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun saveToDB(id: Long, status: String, paid: Int) {
         try {
-            db.execSQL("UPDATE tables SET status = '$status' WHERE id LIKE '$id'")
-            db.execSQL("UPDATE tables SET paid = '$paid' WHERE id LIKE '$id'")
+            Thread {
+                val table = db.tableDao().getTableByID(id)
+                table.status = status
+                table.paidCount = paid
+                db.tableDao().update(table)
+            }.start()
         } catch (e: Exception) {
             Toast.makeText(this, "表格更新失敗", Toast.LENGTH_SHORT).show()
         }
@@ -176,8 +175,12 @@ class MainActivity : AppCompatActivity() {
 
     fun delete(id: Long) {
         try {
-            db.execSQL("DELETE FROM tables WHERE id LIKE $id")
-            upDateList()
+            Thread {
+                db.tableDao().deleteById(id)
+                runOnUiThread {
+                    upDateList()
+                }
+            }.start()
         } catch (e: Exception) {
             Toast.makeText(this, "表格刪除失敗", Toast.LENGTH_SHORT).show()
         }

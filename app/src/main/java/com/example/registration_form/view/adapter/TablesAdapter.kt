@@ -31,19 +31,19 @@ class TablesAdapter(
     override fun getItemCount() = tables.size
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val itemView = holder.itemView
-        val numUnpaid = tables[position].status.length - tables[position].paid
+        val numUnpaid = tables[position].memberCount - tables[position].paidCount
         val list = arrayOf("編輯表格", "複製未繳交成員名單", "刪除表格")
         val alertDialog = AlertDialog.Builder(context)
             .setItems(list) { _, i ->
                 when (i) {
                     0 -> (context as MainActivity).edit(
                         tables[position].id,
-                        tables[position].memberList.toArrayList(),
+                        tables[position].members.toArrayList(),
                         tables[position].title,
                         tables[position].status
                     )
                     1 -> (context as MainActivity).copy(
-                        tables[position].memberList.toArrayList(),
+                        tables[position].members.toArrayList(),
                         tables[position].status
                     )
                     else -> AlertDialog.Builder(context)
@@ -56,7 +56,7 @@ class TablesAdapter(
                         .show()
                 }
             }
-        val textPaid = SpannableString("已繳交\n${tables[position].paid}")
+        val textPaid = SpannableString("已繳交\n${tables[position].paidCount}")
         textPaid.setSpan(
             ForegroundColorSpan(Color.BLACK),
             0, 3,

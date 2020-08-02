@@ -2,14 +2,15 @@ package com.example.registration_form.view.activity
 
 import android.app.Activity
 import android.content.SharedPreferences
-import android.database.sqlite.SQLiteDatabase
 import android.icu.text.SimpleDateFormat
 import android.icu.util.Calendar
+import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import com.example.registration_form.R
-import com.example.registration_form.TablesDB
+import com.example.registration_form.database.TablesDataBase
+import com.example.registration_form.model.Table
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
@@ -18,13 +19,14 @@ import java.util.*
 
 class AddTableActivity : AppCompatActivity() {
 
-    private lateinit var db: SQLiteDatabase
+    private lateinit var db: TablesDataBase
     private lateinit var userInfo: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_table)
 
+        db = TablesDataBase.getInstance(this)
         userInfo = getSharedPreferences("userInfo", Activity.MODE_PRIVATE)
         val edit = userInfo.edit()
 
@@ -35,7 +37,6 @@ class AddTableActivity : AppCompatActivity() {
             ed_min_num.setText("${userInfo.getInt("numMin", 0)}")
             ed_max_num.setText("${userInfo.getInt("numMax", 0)}")
         }
-        db = TablesDB(this).writableDatabase
 
         btn_add_form.setOnClickListener {
             if (ed_max_num.text.isEmpty() || ed_min_num.text.isEmpty() || ed_title.text.isEmpty())
@@ -70,7 +71,7 @@ class AddTableActivity : AppCompatActivity() {
     }
 
     private fun addForm() {
-        val id = "${System.currentTimeMillis()}"
+        val id = System.currentTimeMillis()
         val title = "${ed_title.text}"
         val cal = Calendar.getInstance()
         cal.get(Calendar.YEAR)
@@ -94,10 +95,11 @@ class AddTableActivity : AppCompatActivity() {
                 if (i != endNumber)
                     members += ","
             }
-            db.execSQL(
-                "INSERT INTO tables(id,title,date,members,status,paid,organization,owner) VALUES(?,?,?,?,?,?,?,?)",
-                arrayOf<Any?>(id, title, date, members, status, paid, organization, owner)
-            )
+            val table =
+                Table(id, title, date, members, status, status.length, paid, organization, owner)
+            AsyncTask.execute {
+                db.tableDao().insert(table)
+            }
         } catch (e: Exception) {
             Toast.makeText(this, "表格建立失敗", Toast.LENGTH_SHORT).show()
         }
