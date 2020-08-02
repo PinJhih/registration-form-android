@@ -156,6 +156,9 @@ class MainActivity : AppCompatActivity() {
                 table.status = status
                 table.paidCount = paid
                 db.tableDao().update(table)
+                runOnUiThread {
+                    upDateList()
+                }
             }.start()
         } catch (e: Exception) {
             Toast.makeText(this, "表格更新失敗", Toast.LENGTH_SHORT).show()
