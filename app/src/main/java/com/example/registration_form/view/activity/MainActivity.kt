@@ -2,7 +2,6 @@ package com.example.registration_form.view.activity
 
 import android.app.Activity
 import android.content.*
-import android.database.sqlite.SQLiteDatabase
 import android.os.*
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
@@ -46,6 +45,9 @@ class MainActivity : AppCompatActivity() {
         rv_forms.layoutManager = linearLayoutManager
         adapter = TablesAdapter(this, tables)
         rv_forms.adapter = adapter
+        if (!userInfo.getBoolean("usingRoom", false))
+            copyToRoomDataBase()
+
         try {
             upDateList()
         } catch (E: java.lang.Exception) {
@@ -206,5 +208,35 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         db.close()
+    }
+
+    private fun copyToRoomDataBase() {
+        val sqlDb = TablesDB(this).writableDatabase
+        val data = sqlDb.rawQuery("SELECT * FROM tables", null)
+        val list = ArrayList<Table>()
+        data.moveToFirst()
+        for (i in 0 until data.count) {
+            val id = data.getString(0).toLong()
+            val title = data.getString(1)
+            val date = data.getString(2)
+            val members = data.getString(3)
+            val status = data.getString(4)
+            val paid = data.getInt(5)
+            val organization = data.getString(6)
+            val owner = data.getString(7)
+            val t =
+                Table(id, title, date, members, status, status.length, paid, organization, owner)
+            list.add(t)
+            data.moveToNext()
+        }
+        data.close()
+        Thread {
+            db.tableDao().insertAll(list)
+            runOnUiThread {
+                upDateList()
+            }
+        }.start()
+        sqlDb.execSQL("DROP TABLE IF EXISTS tables")
+        userInfo.edit().putBoolean("usingRoom", true).apply()
     }
 }
