@@ -205,11 +205,6 @@ class MainActivity : AppCompatActivity() {
         Toast.makeText(this, "已複製", Toast.LENGTH_SHORT).show()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        db.close()
-    }
-
     private fun copyToRoomDataBase() {
         val sqlDb = TablesDB(this).writableDatabase
         val data = sqlDb.rawQuery("SELECT * FROM tables", null)
@@ -238,5 +233,6 @@ class MainActivity : AppCompatActivity() {
         }.start()
         sqlDb.execSQL("DROP TABLE IF EXISTS tables")
         userInfo.edit().putBoolean("usingRoom", true).apply()
+        sqlDb.close()
     }
 }
