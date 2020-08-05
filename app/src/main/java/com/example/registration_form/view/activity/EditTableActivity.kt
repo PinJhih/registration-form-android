@@ -65,7 +65,7 @@ class EditTableActivity : AppCompatActivity() {
             .setTitle("確認修改")
             .setMessage("將${number}號的繳交狀態設為$msg?")
             .setPositiveButton("確認") { _, _ ->
-                status[index] = if (status[index] == 't') 'f' else 't'
+                status[index] = if (status[index] == 'f') 't' else 'f'
                 adapter.notifyDataSetChanged()
             }
             .setNegativeButton("取消") { _, _ -> }
