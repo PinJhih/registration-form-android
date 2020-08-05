@@ -16,10 +16,14 @@ interface TableDao {
     @Query("SELECT * FROM Tables WHERE id LIKE :id")
     fun getTableByID(id: Long): Table
 
-    @Query("SELECT * FROM Tables ORDER BY :orderBy")
-    fun getTableList(orderBy: String): List<Table>
+    @Query("SELECT * FROM Tables ORDER BY date ASC")
+    fun getTablesASC(): List<Table>
 
-    fun getTables(orderBy: String) = getTableList(orderBy).toArrayList()
+    @Query("SELECT * FROM Tables ORDER BY date DESC")
+    fun getTablesDESC(): List<Table>
+
+    fun getTables(orderBy: String): ArrayList<Table> =
+        (if (orderBy == "DESC") getTablesDESC() else getTablesASC()).toArrayList()
 
     @Delete
     fun delete(table: Table)
@@ -27,7 +31,7 @@ interface TableDao {
     fun deleteById(id: Long) = delete(getTableByID(id))
 
     fun deleteAll() {
-        val tables = getTableList("date")
+        val tables = getTablesASC()
         for (i in tables) {
             delete(i)
         }

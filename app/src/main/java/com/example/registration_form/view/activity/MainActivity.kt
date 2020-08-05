@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
         db = TablesDataBase.getInstance(this)
         clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         userInfo = getSharedPreferences("userInfo", Activity.MODE_PRIVATE)
-        orderBy = userInfo.getString("sortMode", "date DESC")!!
+        orderBy = userInfo.getString("sortMode", "DESC")!!
         val linearLayoutManager = LinearLayoutManager(this)
         linearLayoutManager.orientation = RecyclerView.VERTICAL
         rv_forms.layoutManager = linearLayoutManager
@@ -81,7 +81,7 @@ class MainActivity : AppCompatActivity() {
                 AlertDialog.Builder(this)
                     .setTitle("排序方式")
                     .setItems(options) { _, i ->
-                        orderBy = if (i == 0) "date DESC" else "date ASC"
+                        orderBy = if (i == 0) "DESC" else "ASC"
                         upDateList()
                         val editor = userInfo.edit()
                         editor.putString("sortMode", orderBy)
@@ -130,7 +130,7 @@ class MainActivity : AppCompatActivity() {
         }
         AsyncTask.execute {
             tables.clear()
-            val t = db.tableDao().getTableList(orderBy)
+            val t = db.tableDao().getTables(orderBy)
             tables.addAll(t)
             val msg = Message()
             msg.what = 1
