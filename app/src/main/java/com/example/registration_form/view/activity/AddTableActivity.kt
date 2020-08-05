@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.SharedPreferences
 import android.icu.text.SimpleDateFormat
 import android.icu.util.Calendar
-import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -50,8 +49,6 @@ class AddTableActivity : AppCompatActivity() {
                 edit.putInt("numMax", "${ed_max_num.text}".toInt())
                 edit.apply()
                 addForm()
-                setResult(Activity.RESULT_OK)
-                finish()
             }
         }
         btn_cancel.setOnClickListener {
@@ -87,26 +84,25 @@ class AddTableActivity : AppCompatActivity() {
         val paid = 0
         val organization = "123"
         val owner = "123"
-
+        for (i in startNumber until endNumber + 1) {
+            members += "$i"
+            status += "f"
+            if (i != endNumber)
+                members += ","
+        }
+        val unpaid = status.length
+        val table =
+            Table(id, title, date, members, status, paid, unpaid, organization, owner)
         try {
-            for (i in startNumber until endNumber + 1) {
-                members += "$i"
-                status += "f"
-                if (i != endNumber)
-                    members += ","
-            }
-            val table =
-                Table(id, title, date, members, status, paid, status.length, organization, owner)
-            AsyncTask.execute {
+            Thread {
                 db.tableDao().insert(table)
-            }
+                runOnUiThread {
+                    setResult(Activity.RESULT_OK)
+                    finish()
+                }
+            }.start()
         } catch (e: Exception) {
             Toast.makeText(this, "表格建立失敗", Toast.LENGTH_SHORT).show()
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        db.close()
     }
 }
