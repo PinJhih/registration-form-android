@@ -109,7 +109,8 @@ class MainActivity : AppCompatActivity() {
                 val id = it.getLong("id")
                 val status = it.getString("status")!!
                 val paid = it.getInt("paid")
-                saveToDB(id, status, paid)
+                val unPaid = it.getInt("unPaid")
+                saveToDB(id, status, paid, unPaid)
             }
             upDateList()
         }
@@ -151,12 +152,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun saveToDB(id: Long, status: String, paid: Int) {
+    private fun saveToDB(id: Long, status: String, paid: Int, unpaid: Int) {
         try {
             Thread {
                 val table = db.tableDao().getTableByID(id)
                 table.status = status
                 table.paidCount = paid
+                table.unpaidCount = unpaid
                 db.tableDao().update(table)
                 runOnUiThread {
                     upDateList()
@@ -217,10 +219,11 @@ class MainActivity : AppCompatActivity() {
             val members = data.getString(3)
             val status = data.getString(4)
             val paid = data.getInt(5)
+            val unpaid = status.length - paid
             val organization = data.getString(6)
             val owner = data.getString(7)
             val t =
-                Table(id, title, date, members, status, status.length, paid, organization, owner)
+                Table(id, title, date, members, status, paid, unpaid, organization, owner)
             list.add(t)
             data.moveToNext()
         }

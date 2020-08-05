@@ -103,7 +103,8 @@ class EditTableActivity : AppCompatActivity() {
                     s += i
                 b.putLong("id", id)
                 b.putString("status", s)
-                b.putInt("paid", getPaidCount())
+                b.putInt("paid", search('t'))
+                b.putInt("unPaid", search('f'))
                 intent.putExtras(b)
                 setResult(Activity.RESULT_OK, intent)
                 finish()
@@ -115,12 +116,12 @@ class EditTableActivity : AppCompatActivity() {
             .show()
     }
 
-    private fun getPaidCount(): Int {
-        var paid = 0
+    private fun search(target: Char): Int {
+        var sum = 0
         for (i in 0 until status.count())
-            if (status[i] == 't')
-                paid++
-        return paid
+            if (status[i] == target)
+                sum++
+        return sum
     }
 
     override fun onBackPressed() {

@@ -96,7 +96,7 @@ class AddTableActivity : AppCompatActivity() {
                     members += ","
             }
             val table =
-                Table(id, title, date, members, status, status.length, paid, organization, owner)
+                Table(id, title, date, members, status, paid, status.length, organization, owner)
             AsyncTask.execute {
                 db.tableDao().insert(table)
             }

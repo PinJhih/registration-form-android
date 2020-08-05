@@ -31,7 +31,7 @@ class TablesAdapter(
     override fun getItemCount() = tables.size
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val itemView = holder.itemView
-        val numUnpaid = tables[position].memberCount - tables[position].paidCount
+        val numUnpaid = tables[position].unpaidCount
         val list = arrayOf("編輯表格", "複製未繳交成員名單", "刪除表格")
         val alertDialog = AlertDialog.Builder(context)
             .setItems(list) { _, i ->

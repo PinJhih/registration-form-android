@@ -17,10 +17,10 @@ data class Table(
     var members: String = "",
     @ColumnInfo(name = "status")
     var status: String = "",
-    @ColumnInfo(name = "memberCount")
-    var memberCount: Int = 0,
     @ColumnInfo(name = "paidCount")
     var paidCount: Int = 0,
+    @ColumnInfo(name = "unpaidCount")
+    var unpaidCount: Int = 0,
     @ColumnInfo(name = "organization")
     var organization: String = "",
     @ColumnInfo(name = "owner")
