@@ -61,7 +61,7 @@ class EditTableActivity : AppCompatActivity() {
 
     fun editStatus(index: Int, number: String) {
         val msg = if (status[index] == 'f') "已繳交" else "未繳交"
-        AlertDialog.Builder(this)
+        val alertDialog = AlertDialog.Builder(this)
             .setTitle("確認修改")
             .setMessage("將${number}號的繳交狀態設為$msg?")
             .setPositiveButton("確認") { _, _ ->
@@ -69,11 +69,13 @@ class EditTableActivity : AppCompatActivity() {
                 adapter.notifyDataSetChanged()
             }
             .setNegativeButton("取消") { _, _ -> }
-            .setNeutralButton("移除成員") { _, _ ->
+        if (status[index] != 'd') {
+            alertDialog.setNeutralButton("移除成員") { _, _ ->
                 status[index] = 'd'
                 adapter.notifyDataSetChanged()
             }
-            .show()
+        }
+        alertDialog.show()
     }
 
     private fun editWholeTable(value: Char) {
