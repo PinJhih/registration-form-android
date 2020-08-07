@@ -28,14 +28,8 @@ interface TableDao {
     @Delete
     fun delete(table: Table)
 
-    fun deleteById(id: Long) = delete(getTableByID(id))
-
-    fun deleteAll() {
-        val tables = getTablesASC()
-        for (i in tables) {
-            delete(i)
-        }
-    }
+    @Query("DELETE FROM Tables")
+    fun deleteAll()
 
     @Update
     fun update(table: Table)

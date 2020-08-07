@@ -50,7 +50,7 @@ class TablesAdapter(
                         .setTitle("刪除表格")
                         .setMessage("確定要刪除表格嗎?")
                         .setPositiveButton("是") { _, _ ->
-                            (context as MainActivity).delete(tables[position].id)
+                            (context as MainActivity).delete(tables[position])
                         }
                         .setNegativeButton("否") { _, _ -> }
                         .show()

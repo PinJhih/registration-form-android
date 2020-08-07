@@ -180,10 +180,10 @@ class MainActivity : AppCompatActivity() {
         startActivityForResult(i, 1)
     }
 
-    fun delete(id: Long) {
+    fun delete(target: Table) {
         try {
             Thread {
-                db.tableDao().deleteById(id)
+                db.tableDao().delete(target)
                 runOnUiThread {
                     upDateList()
                 }
