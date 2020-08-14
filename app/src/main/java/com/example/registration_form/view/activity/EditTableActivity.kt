@@ -94,28 +94,18 @@ class EditTableActivity : AppCompatActivity() {
     }
 
     private fun saveAndFinish() {
-        AlertDialog.Builder(this)
-            .setTitle("儲存")
-            .setMessage("確定儲存變更嗎?")
-            .setPositiveButton("儲存") { _, _ ->
-                val intent = Intent()
-                val b = Bundle()
-                var s = ""
-                for (i in status)
-                    s += i
-                b.putLong("id", id)
-                b.putString("status", s)
-                b.putInt("paid", search('t'))
-                b.putInt("unPaid", search('f'))
-                intent.putExtras(b)
-                setResult(Activity.RESULT_OK, intent)
-                finish()
-            }
-            .setNegativeButton("返回") { _, _ -> }
-            .setNeutralButton("放棄變更") { _, _ ->
-                finish()
-            }
-            .show()
+        val intent = Intent()
+        val b = Bundle()
+        var s = ""
+        for (i in status)
+            s += i
+        b.putLong("id", id)
+        b.putString("status", s)
+        b.putInt("paid", search('t'))
+        b.putInt("unPaid", search('f'))
+        intent.putExtras(b)
+        setResult(Activity.RESULT_OK, intent)
+        finish()
     }
 
     private fun search(target: Char): Int {
@@ -127,7 +117,17 @@ class EditTableActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        saveAndFinish()
+        AlertDialog.Builder(this)
+            .setTitle("儲存")
+            .setMessage("確定儲存變更嗎?")
+            .setPositiveButton("儲存") { _, _ ->
+                saveAndFinish()
+            }
+            .setNegativeButton("返回") { _, _ -> }
+            .setNeutralButton("放棄變更") { _, _ ->
+                finish()
+            }
+            .show()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
