@@ -19,6 +19,7 @@ import com.example.registration_form.model.Table
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.Exception
 
@@ -186,11 +187,24 @@ class MainActivity : AppCompatActivity() {
                 db.tableDao().delete(target)
                 runOnUiThread {
                     upDateList()
+                    Snackbar.make(layout_main_page, "刪除成功", Snackbar.LENGTH_SHORT)
+                        .setAction("還原") {
+                            undo(target)
+                        }.show()
                 }
             }.start()
         } catch (e: Exception) {
             Toast.makeText(this, "表格刪除失敗", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun undo(table: Table) {
+        Thread {
+            db.tableDao().insert(table)
+            runOnUiThread {
+                upDateList()
+            }
+        }.start()
     }
 
     fun copy(members: ArrayList<String>, status: String) {
