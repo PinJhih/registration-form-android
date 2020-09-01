@@ -48,7 +48,11 @@ class MainActivity : AppCompatActivity() {
         rv_forms.adapter = adapter
         if (!userInfo.getBoolean("usingRoom", false))
             copyToRoomDataBase()
-
+        if (!userInfo.getBoolean("SQLiteDeleted", false))
+            try {
+                this.deleteDatabase("Tables.db")
+            } catch (e: Exception) {
+            }
         try {
             upDateList()
         } catch (E: java.lang.Exception) {
