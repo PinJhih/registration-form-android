@@ -1,5 +1,6 @@
 package com.example.registration_form.database
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.registration_form.model.Table
 
@@ -17,13 +18,13 @@ interface TableDao {
     fun getTableByID(id: Long): Table
 
     @Query("SELECT * FROM Tables ORDER BY date ASC")
-    fun getTablesASC(): List<Table>
+    fun getTablesASC(): LiveData<List<Table>>
 
     @Query("SELECT * FROM Tables ORDER BY date DESC")
-    fun getTablesDESC(): List<Table>
+    fun getTablesDESC(): LiveData<List<Table>>
 
-    fun getTables(orderBy: String): ArrayList<Table> =
-        (if (orderBy == "DESC") getTablesDESC() else getTablesASC()).toArrayList()
+    fun getTables(orderBy: String): LiveData<List<Table>> =
+        if (orderBy == "DESC") getTablesDESC() else getTablesASC()
 
     @Delete
     fun delete(table: Table)
@@ -36,13 +37,6 @@ interface TableDao {
 
     private fun ArrayList<Table>.toList(): List<Table> {
         val tables: MutableList<Table> = mutableListOf()
-        for (i in this)
-            tables.add(i)
-        return tables
-    }
-
-    private fun List<Table>.toArrayList(): ArrayList<Table> {
-        val tables = ArrayList<Table>()
         for (i in this)
             tables.add(i)
         return tables
