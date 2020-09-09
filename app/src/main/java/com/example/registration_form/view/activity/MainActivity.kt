@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var userInfo: SharedPreferences
     private lateinit var orderBy: String
     private lateinit var viewModel: TablesViewModel
-    private var tables: List<Table> = mutableListOf()
+    private var tables: MutableList<Table> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,7 +49,15 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this).get(TablesViewModel::class.java)
         viewModel.tables.observe(this, Observer { tableList ->
             tableList?.let {
-                tables = tableList
+                tables.clear()
+                tables.addAll(tableList)
+                if (tables.isEmpty()) {
+                    rv_forms.isVisible = false
+                    tv_tip.isVisible = true
+                } else {
+                    rv_forms.isVisible = true
+                    tv_tip.isVisible = false
+                }
                 adapter.notifyDataSetChanged()
             }
         })
