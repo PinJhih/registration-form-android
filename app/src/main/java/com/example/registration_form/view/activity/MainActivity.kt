@@ -8,6 +8,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -40,6 +41,11 @@ class MainActivity : AppCompatActivity() {
         clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         userInfo = getSharedPreferences("userInfo", Activity.MODE_PRIVATE)
         orderBy = userInfo.getString("sortMode", "DESC")!!
+        val linearLayoutManager = LinearLayoutManager(this)
+        linearLayoutManager.orientation = RecyclerView.VERTICAL
+        rv_forms.layoutManager = linearLayoutManager
+        adapter = TablesAdapter(this, tables)
+        rv_forms.adapter = adapter
         viewModel = ViewModelProvider(this).get(TablesViewModel::class.java)
         viewModel.tables.observe(this, Observer { tableList ->
             tableList?.let {
@@ -47,11 +53,6 @@ class MainActivity : AppCompatActivity() {
                 adapter.notifyDataSetChanged()
             }
         })
-        val linearLayoutManager = LinearLayoutManager(this)
-        linearLayoutManager.orientation = RecyclerView.VERTICAL
-        rv_forms.layoutManager = linearLayoutManager
-        adapter = TablesAdapter(this, tables)
-        rv_forms.adapter = adapter
 
         btn_start_edit.setOnClickListener {
             val i = Intent(this, AddTableActivity::class.java)
