@@ -154,7 +154,7 @@ class MainActivity : AppCompatActivity() {
             Thread {
                 viewModel.delete(target)
                 runOnUiThread {
-                    Snackbar.make(layout_main_page, "刪除成功", Snackbar.LENGTH_SHORT)
+                    Snackbar.make(layout_main_page, "刪除成功", Snackbar.LENGTH_LONG)
                         .setAction("還原") {
                             undo(target)
                         }.show()
