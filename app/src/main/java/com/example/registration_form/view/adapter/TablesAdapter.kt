@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.item_table.view.*
 
 class TablesAdapter(
     private val context: Context,
-    private val tables: ArrayList<Table>
+    private val tables: List<Table>
 ) :
     RecyclerView.Adapter<TablesAdapter.ViewHolder>() {
     class ViewHolder(v: View) : RecyclerView.ViewHolder(v)
@@ -37,7 +37,7 @@ class TablesAdapter(
             .setItems(list) { _, i ->
                 when (i) {
                     0 -> (context as MainActivity).edit(
-                        tables[position].id,
+                        position,
                         tables[position].members.toArrayList(),
                         tables[position].title,
                         tables[position].status

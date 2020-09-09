@@ -8,14 +8,14 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.core.view.isVisible
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.registration_form.R
 import com.example.registration_form.view.adapter.TablesAdapter
-import com.example.registration_form.TablesDB
-import com.example.registration_form.database.TablesDataBase
 import com.example.registration_form.model.Table
+import com.example.registration_form.viewmodel.TablesViewModel
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
@@ -25,39 +25,33 @@ import kotlin.Exception
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var db: TablesDataBase
     private lateinit var adapter: TablesAdapter
     private lateinit var clipboard: ClipboardManager
     private lateinit var clip: ClipData
     private lateinit var userInfo: SharedPreferences
     private lateinit var orderBy: String
-    private val tables = ArrayList<Table>()
+    private lateinit var viewModel: TablesViewModel
+    private var tables: List<Table> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        db = TablesDataBase.getInstance(this)
         clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         userInfo = getSharedPreferences("userInfo", Activity.MODE_PRIVATE)
         orderBy = userInfo.getString("sortMode", "DESC")!!
+        viewModel = ViewModelProvider(this).get(TablesViewModel::class.java)
+        viewModel.tables.observe(this, Observer { tableList ->
+            tableList?.let {
+                tables = tableList
+                adapter.notifyDataSetChanged()
+            }
+        })
         val linearLayoutManager = LinearLayoutManager(this)
         linearLayoutManager.orientation = RecyclerView.VERTICAL
         rv_forms.layoutManager = linearLayoutManager
         adapter = TablesAdapter(this, tables)
         rv_forms.adapter = adapter
-        if (!userInfo.getBoolean("usingRoom", false))
-            copyToRoomDataBase()
-        if (!userInfo.getBoolean("SQLiteDeleted", false))
-            try {
-                this.deleteDatabase("Tables.db")
-            } catch (e: Exception) {
-            }
-        try {
-            upDateList()
-        } catch (E: java.lang.Exception) {
-            Toast.makeText(this, "載入時發生錯誤", Toast.LENGTH_SHORT).show()
-        }
 
         btn_start_edit.setOnClickListener {
             val i = Intent(this, AddTableActivity::class.java)
@@ -87,7 +81,6 @@ class MainActivity : AppCompatActivity() {
                     .setTitle("排序方式")
                     .setItems(options) { _, i ->
                         orderBy = if (i == 0) "DESC" else "ASC"
-                        upDateList()
                         val editor = userInfo.edit()
                         editor.putString("sortMode", orderBy)
                         editor.apply()
@@ -111,45 +104,19 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
             data?.extras?.let {
-                val id = it.getLong("id")
+                val position = it.getInt("position")
                 val status = it.getString("status")!!
                 val paid = it.getInt("paid")
                 val unPaid = it.getInt("unPaid")
-                saveToDB(id, status, paid, unPaid)
+                saveToDB(position, status, paid, unPaid)
             }
-            upDateList()
-        }
-    }
-
-    private fun upDateList() {
-        val handler = Handler {
-            adapter.notifyDataSetChanged()
-            if (tables.size == 0) {
-                tv_tip.isVisible = true
-                rv_forms.isVisible = false
-            } else {
-                tv_tip.isVisible = false
-                rv_forms.isVisible = true
-            }
-            true
-        }
-        AsyncTask.execute {
-            tables.clear()
-            val t = db.tableDao().getTables(orderBy)
-            tables.addAll(t)
-            val msg = Message()
-            msg.what = 1
-            handler.sendMessage(msg)
         }
     }
 
     private fun deleteAll() {
         try {
             Thread {
-                db.tableDao().deleteAll()
-                runOnUiThread {
-                    upDateList()
-                }
+                viewModel.deleteAll()
             }.start()
             Toast.makeText(this, "已刪除所有表格", Toast.LENGTH_SHORT).show()
         } catch (e: Exception) {
@@ -157,27 +124,24 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun saveToDB(id: Long, status: String, paid: Int, unpaid: Int) {
+    private fun saveToDB(position: Int, status: String, paid: Int, unpaid: Int) {
         try {
             Thread {
-                val table = db.tableDao().getTableByID(id)
+                val table = tables[position]
                 table.status = status
                 table.paidCount = paid
                 table.unpaidCount = unpaid
-                db.tableDao().update(table)
-                runOnUiThread {
-                    upDateList()
-                }
+                viewModel.insert(table)
             }.start()
         } catch (e: Exception) {
             Toast.makeText(this, "表格更新失敗", Toast.LENGTH_SHORT).show()
         }
     }
 
-    fun edit(id: Long, members: ArrayList<String>, title: String, status: String) {
+    fun edit(position: Int, members: ArrayList<String>, title: String, status: String) {
         val i = Intent(this, EditTableActivity::class.java)
         val b = Bundle()
-        b.putLong("id", id)
+        b.putInt("position", position)
         b.putString("title", title)
         b.putStringArrayList("members", members)
         b.putString("status", status)
@@ -188,9 +152,8 @@ class MainActivity : AppCompatActivity() {
     fun delete(target: Table) {
         try {
             Thread {
-                db.tableDao().delete(target)
+                viewModel.delete(target)
                 runOnUiThread {
-                    upDateList()
                     Snackbar.make(layout_main_page, "刪除成功", Snackbar.LENGTH_SHORT)
                         .setAction("還原") {
                             undo(target)
@@ -204,10 +167,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun undo(table: Table) {
         Thread {
-            db.tableDao().insert(table)
-            runOnUiThread {
-                upDateList()
-            }
+            viewModel.insert(table)
         }.start()
     }
 
@@ -223,37 +183,5 @@ class MainActivity : AppCompatActivity() {
         clip = ClipData.newPlainText("msg", msg)
         clipboard.setPrimaryClip(clip)
         Toast.makeText(this, "已複製", Toast.LENGTH_SHORT).show()
-    }
-
-    private fun copyToRoomDataBase() {
-        val sqlDb = TablesDB(this).writableDatabase
-        val data = sqlDb.rawQuery("SELECT * FROM tables", null)
-        val list = ArrayList<Table>()
-        data.moveToFirst()
-        for (i in 0 until data.count) {
-            val id = data.getString(0).toLong()
-            val title = data.getString(1)
-            val date = data.getString(2)
-            val members = data.getString(3)
-            val status = data.getString(4)
-            val paid = data.getInt(5)
-            val unpaid = status.length - paid
-            val organization = data.getString(6)
-            val owner = data.getString(7)
-            val t =
-                Table(id, title, date, members, status, paid, unpaid, organization, owner)
-            list.add(t)
-            data.moveToNext()
-        }
-        data.close()
-        Thread {
-            db.tableDao().insertAll(list)
-            runOnUiThread {
-                upDateList()
-            }
-        }.start()
-        sqlDb.execSQL("DROP TABLE IF EXISTS tables")
-        userInfo.edit().putBoolean("usingRoom", true).apply()
-        sqlDb.close()
     }
 }

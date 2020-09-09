@@ -21,7 +21,7 @@ class EditTableActivity : AppCompatActivity() {
     private lateinit var adapter: MembersAdapter
     private var members = ArrayList<String>()
     private var status = ArrayList<Char>()
-    private var id = 0L
+    private var position = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +29,7 @@ class EditTableActivity : AppCompatActivity() {
 
         intent?.extras?.let {
             title = it.getString("title")
-            id = it.getLong("id")
+            position = it.getInt("position")
             val m = it.getStringArrayList("members")!!
             val s = it.getString("status")!!
             for (i in 0 until m.size) {
@@ -99,7 +99,7 @@ class EditTableActivity : AppCompatActivity() {
         var s = ""
         for (i in status)
             s += i
-        b.putLong("id", id)
+        b.putInt("position", position)
         b.putString("status", s)
         b.putInt("paid", search('t'))
         b.putInt("unPaid", search('f'))
