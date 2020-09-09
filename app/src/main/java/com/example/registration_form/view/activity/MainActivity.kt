@@ -81,6 +81,7 @@ class MainActivity : AppCompatActivity() {
                     .setTitle("排序方式")
                     .setItems(options) { _, i ->
                         orderBy = if (i == 0) "DESC" else "ASC"
+                        viewModel.sorb(orderBy)
                         val editor = userInfo.edit()
                         editor.putString("sortMode", orderBy)
                         editor.apply()

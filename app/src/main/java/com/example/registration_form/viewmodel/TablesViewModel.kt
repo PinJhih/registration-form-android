@@ -10,9 +10,9 @@ import com.example.registration_form.model.Table
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class TablesViewModel(application: Application): AndroidViewModel(application) {
+class TablesViewModel(application: Application) : AndroidViewModel(application) {
     private val repository: TablesRepository
-    val tables : LiveData<List<Table>>
+    val tables: LiveData<List<Table>>
 
     init {
         val tablesDao = TablesDataBase.getInstance(application).tableDao()
@@ -30,5 +30,9 @@ class TablesViewModel(application: Application): AndroidViewModel(application) {
 
     fun deleteAll() = viewModelScope.launch(Dispatchers.IO) {
         repository.deleteAll()
+    }
+
+    fun sorb(orderBy: String) = viewModelScope.launch(Dispatchers.IO) {
+        repository.sorb(orderBy)
     }
 }
