@@ -3,6 +3,7 @@ package com.example.registration_form.view.activity
 import android.app.Activity
 import android.content.*
 import android.os.*
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
@@ -40,6 +41,19 @@ class MainActivity : AppCompatActivity() {
 
         clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         userInfo = getSharedPreferences("userInfo", Activity.MODE_PRIVATE)
+        if (!userInfo.getBoolean("usingRoomDB", false)) {
+            try {
+                this.deleteDatabase("Tables.db")
+                val editor = userInfo.edit()
+                editor.putBoolean("usingRoomDB", true)
+                editor.apply()
+            } catch (e: Exception) {
+                val editor = userInfo.edit()
+                editor.putBoolean("usingRoomDB", true)
+                editor.apply()
+                Log.i("db", "已刪除SQLiteDB")
+            }
+        }
         orderBy = userInfo.getString("sortMode", "DESC")!!
         val linearLayoutManager = LinearLayoutManager(this)
         linearLayoutManager.orientation = RecyclerView.VERTICAL
