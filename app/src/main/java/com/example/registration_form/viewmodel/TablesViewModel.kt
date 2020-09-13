@@ -31,8 +31,4 @@ class TablesViewModel(application: Application) : AndroidViewModel(application) 
     fun deleteAll() = viewModelScope.launch(Dispatchers.IO) {
         repository.deleteAll()
     }
-
-    fun sorb(orderBy: String) = viewModelScope.launch(Dispatchers.IO) {
-        repository.sorb(orderBy)
-    }
 }

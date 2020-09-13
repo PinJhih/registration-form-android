@@ -17,14 +17,8 @@ interface TableDao {
     @Query("SELECT * FROM Tables WHERE id LIKE :id")
     fun getTableByID(id: Long): Table
 
-    @Query("SELECT * FROM Tables ORDER BY date ASC")
-    fun getTablesASC(): LiveData<List<Table>>
-
-    @Query("SELECT * FROM Tables ORDER BY date DESC")
-    fun getTablesDESC(): LiveData<List<Table>>
-
-    fun getTables(orderBy: String): LiveData<List<Table>> =
-        if (orderBy == "DESC") getTablesDESC() else getTablesASC()
+    @Query("SELECT * FROM Tables ORDER BY date")
+    fun getTables(): LiveData<List<Table>>
 
     @Delete
     fun delete(table: Table)

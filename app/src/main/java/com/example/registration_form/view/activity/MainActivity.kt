@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var adapter: TablesAdapter
     private lateinit var userInfo: SharedPreferences
-    private lateinit var orderBy: String
+    private lateinit var order: String
     private lateinit var viewModel: TablesViewModel
     private var tables: MutableList<Table> = mutableListOf()
 
@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
                 Log.i("db", "已刪除SQLiteDB")
             }
         }
-        orderBy = userInfo.getString("sortMode", "DESC")!!
+        order = userInfo.getString("sortMode", "DESC")!!
         val linearLayoutManager = LinearLayoutManager(this)
         linearLayoutManager.orientation = RecyclerView.VERTICAL
         rv_forms.layoutManager = linearLayoutManager
@@ -59,16 +59,7 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this).get(TablesViewModel::class.java)
         viewModel.tables.observe(this, Observer { tableList ->
             tableList?.let {
-                tables.clear()
-                tables.addAll(tableList)
-                if (tables.isEmpty()) {
-                    rv_forms.isVisible = false
-                    tv_tip.isVisible = true
-                } else {
-                    rv_forms.isVisible = true
-                    tv_tip.isVisible = false
-                }
-                adapter.notifyDataSetChanged()
+                updateList(tableList)
             }
         })
 
@@ -99,11 +90,12 @@ class MainActivity : AppCompatActivity() {
                 AlertDialog.Builder(this)
                     .setTitle("排序方式")
                     .setItems(options) { _, i ->
-                        orderBy = if (i == 0) "DESC" else "ASC"
-                        viewModel.sorb(orderBy)
+                        order = if (i == 0) "DESC" else "ASC"
                         val editor = userInfo.edit()
-                        editor.putString("sortMode", orderBy)
+                        editor.putString("sortMode", order)
                         editor.apply()
+                        updateList(null)
+                        adapter.notifyDataSetChanged()
                     }
                     .show()
             }
@@ -131,6 +123,26 @@ class MainActivity : AppCompatActivity() {
                 saveToDB(position, status, paid, unPaid)
             }
         }
+    }
+
+    private fun updateList(list: List<Table>?) {
+        //傳入null則只重新排序
+        list?.let {
+            tables.clear()
+            tables.addAll(list)
+            if (tables.isEmpty()) {
+                rv_forms.isVisible = false
+                tv_tip.isVisible = true
+            } else {
+                rv_forms.isVisible = true
+                tv_tip.isVisible = false
+            }
+        }
+        if (order == "DESC")
+            tables.sortByDescending { it.date }
+        else
+            tables.sortBy { it.date }
+        adapter.notifyDataSetChanged()
     }
 
     private fun deleteAll() {
