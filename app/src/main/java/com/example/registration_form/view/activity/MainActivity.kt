@@ -28,8 +28,6 @@ import kotlin.Exception
 class MainActivity : AppCompatActivity() {
 
     private lateinit var adapter: TablesAdapter
-    private lateinit var clipboard: ClipboardManager
-    private lateinit var clip: ClipData
     private lateinit var userInfo: SharedPreferences
     private lateinit var orderBy: String
     private lateinit var viewModel: TablesViewModel
@@ -38,8 +36,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         userInfo = getSharedPreferences("userInfo", Activity.MODE_PRIVATE)
         if (!userInfo.getBoolean("usingRoomDB", false)) {
             try {
@@ -196,6 +192,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun copy(members: ArrayList<String>, status: String) {
+        val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val clip: ClipData
         var msg = ""
         for (i in 0 until members.size) {
             if (status[i] == 'f') {
