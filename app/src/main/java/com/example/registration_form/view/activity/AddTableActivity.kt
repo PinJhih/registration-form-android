@@ -37,7 +37,7 @@ class AddTableActivity : AppCompatActivity() {
             ed_max_num.setText("${userInfo.getInt("numMax", 0)}")
         }
 
-        btn_add_form.setOnClickListener {
+        btn_add_table.setOnClickListener {
             if (ed_max_num.text.isEmpty() || ed_min_num.text.isEmpty() || ed_title.text.isEmpty())
                 Toast.makeText(this, "請填滿所有欄位", Toast.LENGTH_SHORT).show()
             else if (ed_max_num.text.toString().toInt() < ed_min_num.text.toString().toInt())
@@ -48,7 +48,7 @@ class AddTableActivity : AppCompatActivity() {
                 edit.putInt("numMin", "${ed_min_num.text}".toInt())
                 edit.putInt("numMax", "${ed_max_num.text}".toInt())
                 edit.apply()
-                addForm()
+                addTable()
             }
         }
         btn_cancel.setOnClickListener {
@@ -67,7 +67,7 @@ class AddTableActivity : AppCompatActivity() {
         }
     }
 
-    private fun addForm() {
+    private fun addTable() {
         val id = System.currentTimeMillis()
         val title = "${ed_title.text}"
         val cal = Calendar.getInstance()

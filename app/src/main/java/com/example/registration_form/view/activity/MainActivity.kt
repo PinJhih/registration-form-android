@@ -53,9 +53,9 @@ class MainActivity : AppCompatActivity() {
         order = userInfo.getString("sortMode", "DESC")!!
         val linearLayoutManager = LinearLayoutManager(this)
         linearLayoutManager.orientation = RecyclerView.VERTICAL
-        rv_forms.layoutManager = linearLayoutManager
+        rv_tables.layoutManager = linearLayoutManager
         adapter = TablesAdapter(this, tables)
-        rv_forms.adapter = adapter
+        rv_tables.adapter = adapter
         viewModel = ViewModelProvider(this).get(TablesViewModel::class.java)
         viewModel.tables.observe(this, Observer { tableList ->
             tableList?.let {
@@ -134,10 +134,10 @@ class MainActivity : AppCompatActivity() {
             tables.clear()
             tables.addAll(list)
             if (tables.isEmpty()) {
-                rv_forms.isVisible = false
+                rv_tables.isVisible = false
                 tv_tip.isVisible = true
             } else {
-                rv_forms.isVisible = true
+                rv_tables.isVisible = true
                 tv_tip.isVisible = false
             }
         }

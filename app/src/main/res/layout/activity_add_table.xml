@@ -7,7 +7,7 @@
     tools:context=".view.activity.AddTableActivity">
 
     <TextView
-        android:id="@+id/tv_form_title"
+        android:id="@+id/tv_table_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -30,7 +30,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_form_title" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_table_title" />
 
     <EditText
         android:id="@+id/ed_min_num"
@@ -82,7 +82,7 @@
         app:layout_constraintTop_toBottomOf="@+id/ed_title" />
 
     <Button
-        android:id="@+id/btn_add_form"
+        android:id="@+id/btn_add_table"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -101,7 +101,7 @@
         android:text="@string/cancel"
         android:textColor="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_add_form" />
+        app:layout_constraintEnd_toStartOf="@+id/btn_add_table" />
 
     <com.google.android.gms.ads.AdView
         android:id="@+id/adView_add"
