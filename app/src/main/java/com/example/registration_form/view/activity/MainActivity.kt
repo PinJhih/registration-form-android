@@ -67,7 +67,10 @@ class MainActivity : AppCompatActivity() {
             val i = Intent(this, AddTableActivity::class.java)
             startActivityForResult(i, 0)
         }
+    }
 
+    override fun onStart() {
+        super.onStart()
         MobileAds.initialize(this) {}
         val adRequest = AdRequest.Builder().build()
         adView_main.loadAd(adRequest)
