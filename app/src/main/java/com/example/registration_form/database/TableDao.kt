@@ -6,7 +6,7 @@ import com.example.registration_form.model.Table
 
 @Dao
 interface TableDao {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(table: Table)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
