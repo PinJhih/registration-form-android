@@ -18,7 +18,7 @@
     <string name="sort">排序方式</string>
     <string name="delete_all">刪除所有表格</string>
     <string name="id_app">ca-app-pub-3142349516815132~8409143027</string>
-    <string name="id_ad_main_page">ca-app-pub-3940256099942544/6300978111</string>
-    <string name="id_ad_add_page">ca-app-pub-3940256099942544/6300978111</string>
-    <string name="id_ad_edit_page">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="id_ad_main_page">ca-app-pub-3142349516815132/6792615504</string>
+    <string name="id_ad_add_page">ca-app-pub-3142349516815132/8764366243</string>
+    <string name="id_ad_edit_page">ca-app-pub-3142349516815132/3208593710</string>
 </resources>
