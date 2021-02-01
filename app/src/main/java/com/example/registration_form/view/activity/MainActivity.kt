@@ -36,6 +36,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        title = "我的表格"
         userInfo = getSharedPreferences("userInfo", Activity.MODE_PRIVATE)
         if (!userInfo.getBoolean("usingRoomDB", false)) {
             try {
@@ -88,6 +89,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
+            R.id.search -> {
+                val i = Intent(this, SearchActivity::class.java)
+                startActivityForResult(i, 0)
+            }
             R.id.sort -> {
                 val options = arrayOf("新到舊", "舊到新")
                 AlertDialog.Builder(this)
@@ -125,7 +130,8 @@ class MainActivity : AppCompatActivity() {
                 val unPaid = it.getInt("unPaid")
                 saveToDB(position, status, paid, unPaid)
             }
-        }
+        } else
+            updateList(null)
     }
 
     private fun updateList(list: List<Table>?) {
