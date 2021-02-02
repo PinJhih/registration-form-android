@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var userInfo: SharedPreferences
     private lateinit var order: String
     private lateinit var viewModel: TablesViewModel
-    private lateinit var searchView:SearchView
+    private lateinit var searchView: SearchView
     private var tables: MutableList<Table> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -97,6 +97,7 @@ class MainActivity : AppCompatActivity() {
             searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextChange(newText: String?): Boolean {
                     newText?.let {
+                        search(newText)
                     }
                     return false
                 }
@@ -112,6 +113,7 @@ class MainActivity : AppCompatActivity() {
     override fun onBackPressed() {
         if (!searchView.isIconified) {
             searchView.onActionViewCollapsed()
+            updateList(null)
         } else {
             super.onBackPressed()
         }
@@ -177,6 +179,18 @@ class MainActivity : AppCompatActivity() {
             tables.sortByDescending { it.date }
         else
             tables.sortBy { it.date }
+        adapter.notifyDataSetChanged()
+    }
+
+    private fun search(target: String) {
+        val list: MutableList<Table> = mutableListOf()
+        list.clear()
+        for(i in tables){
+            if(target in i.title)
+                list.add(i)
+        }
+        tables.clear()
+        tables.addAll(list)
         adapter.notifyDataSetChanged()
     }
 
