@@ -9,6 +9,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -31,6 +32,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var userInfo: SharedPreferences
     private lateinit var order: String
     private lateinit var viewModel: TablesViewModel
+    private lateinit var searchView:SearchView
     private var tables: MutableList<Table> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,16 +83,42 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         super.onCreateOptionsMenu(menu)
         menuInflater.inflate(R.menu.menu_main, menu)
+        val item = menu.findItem(R.id.search)
+        if (item != null) {
+            searchView = item.actionView as SearchView
+
+            searchView.setOnCloseListener {
+                true
+            }
+
+            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    newText?.let {
+                    }
+                    return false
+                }
+
+                override fun onQueryTextSubmit(query: String): Boolean {
+                    return false
+                }
+            })
+        }
         return true
+    }
+
+    override fun onBackPressed() {
+        if (!searchView.isIconified) {
+            searchView.onActionViewCollapsed()
+        } else {
+            super.onBackPressed()
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.search -> {
-            }
             R.id.sort -> {
                 val options = arrayOf("新到舊", "舊到新")
                 AlertDialog.Builder(this)
