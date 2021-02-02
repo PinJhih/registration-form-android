@@ -90,8 +90,6 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.search -> {
-                val i = Intent(this, SearchActivity::class.java)
-                startActivityForResult(i, 0)
             }
             R.id.sort -> {
                 val options = arrayOf("新到舊", "舊到新")
