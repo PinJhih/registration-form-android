@@ -12,7 +12,7 @@ class StartActivity : AppCompatActivity() {
 
         Thread (
             Runnable {
-                Thread.sleep(1250)
+                Thread.sleep(850)
                 val i = Intent(this, MainActivity::class.java)
                 startActivityForResult(i, 0)
             }
