@@ -1,4 +1,4 @@
-package com.example.registration_form.view.activity
+package com.registration_form.view.activities
 
 import android.app.Activity
 import android.content.Intent
@@ -8,15 +8,14 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.registration_form.view.adapter.MembersAdapter
-import com.example.registration_form.R
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
+import com.registration_form.R
+import com.registration_form.view.adapters.MembersAdapter
 import kotlinx.android.synthetic.main.activity_edit_table.*
 
 class EditTableActivity : AppCompatActivity() {
-
     private lateinit var gridLayoutManager: GridLayoutManager
     private lateinit var adapter: MembersAdapter
     private var members = ArrayList<String>()

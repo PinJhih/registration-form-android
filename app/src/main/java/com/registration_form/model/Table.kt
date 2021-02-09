@@ -1,4 +1,4 @@
-package com.example.registration_form.model
+package com.registration_form.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

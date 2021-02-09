@@ -1,4 +1,4 @@
-package com.example.registration_form
+package com.registration_form
 
 import org.junit.Test
 

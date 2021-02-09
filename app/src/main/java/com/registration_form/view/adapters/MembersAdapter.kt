@@ -1,4 +1,4 @@
-package com.example.registration_form.view.adapter
+package com.registration_form.view.adapters
 
 import android.content.Context
 import android.graphics.Color
@@ -6,8 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.registration_form.R
-import com.example.registration_form.view.activity.EditTableActivity
+import com.registration_form.R
+import com.registration_form.view.activities.EditTableActivity
 import kotlinx.android.synthetic.main.item_member.view.*
 
 class MembersAdapter(
@@ -49,4 +49,3 @@ class MembersAdapter(
         }
     }
 }
-

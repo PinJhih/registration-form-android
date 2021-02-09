@@ -1,4 +1,4 @@
-package com.example.registration_form.view.activity
+package com.registration_form.view.activities
 
 import android.app.Activity
 import android.content.SharedPreferences
@@ -7,17 +7,16 @@ import android.icu.util.Calendar
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
-import com.example.registration_form.R
-import com.example.registration_form.database.TablesDataBase
-import com.example.registration_form.model.Table
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
+import com.registration_form.R
+import com.registration_form.database.TablesDataBase
+import com.registration_form.model.Table
 import kotlinx.android.synthetic.main.activity_add_table.*
 import java.util.*
 
 class AddTableActivity : AppCompatActivity() {
-
     private lateinit var db: TablesDataBase
     private lateinit var userInfo: SharedPreferences
 

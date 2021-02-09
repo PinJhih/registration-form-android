@@ -1,4 +1,4 @@
-package com.example.registration_form.view.activity
+package com.registration_form.view.activities
 
 import android.app.Activity
 import android.content.*
@@ -15,10 +15,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.registration_form.R
-import com.example.registration_form.view.adapter.TablesAdapter
-import com.example.registration_form.model.Table
-import com.example.registration_form.viewmodel.TablesViewModel
+import com.registration_form.R
+import com.registration_form.view.adapters.TablesAdapter
+import com.registration_form.model.Table
+import com.registration_form.viewmodel.TablesViewModel
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
@@ -27,13 +27,13 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.Exception
 
 class MainActivity : AppCompatActivity() {
-
     private lateinit var adapter: TablesAdapter
     private lateinit var userInfo: SharedPreferences
     private lateinit var order: String
     private lateinit var viewModel: TablesViewModel
     private lateinit var searchView: SearchView
     private var tables: MutableList<Table> = mutableListOf()
+    private var backup: MutableList<Table> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -113,7 +113,7 @@ class MainActivity : AppCompatActivity() {
     override fun onBackPressed() {
         if (!searchView.isIconified) {
             searchView.onActionViewCollapsed()
-            updateList(null)
+            updateList(backup)
         } else {
             super.onBackPressed()
         }
@@ -143,6 +143,10 @@ class MainActivity : AppCompatActivity() {
                     }
                     .setNegativeButton("取消") { _, _ -> }
                     .show()
+            }
+            R.id.search -> {
+                backup.clear()
+                backup.addAll(tables)
             }
         }
         return true
@@ -183,14 +187,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun search(target: String) {
-        val list: MutableList<Table> = mutableListOf()
-        list.clear()
-        for(i in tables){
-            if(target in i.title)
-                list.add(i)
-        }
         tables.clear()
-        tables.addAll(list)
+        for (i in tables) {
+            if (target in i.title)
+                tables.add(i)
+        }
         adapter.notifyDataSetChanged()
     }
 

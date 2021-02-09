@@ -1,8 +1,8 @@
-package com.example.registration_form.database
+package com.registration_form.database
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.registration_form.model.Table
+import com.registration_form.model.Table
 
 @Dao
 interface TableDao {

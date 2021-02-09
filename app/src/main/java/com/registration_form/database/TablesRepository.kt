@@ -1,7 +1,7 @@
-package com.example.registration_form.database
+package com.registration_form.database
 
 import androidx.lifecycle.LiveData
-import com.example.registration_form.model.Table
+import com.registration_form.model.Table
 
 class TablesRepository(private val tableDao: TableDao) {
     var tables: LiveData<List<Table>> = tableDao.getTables()

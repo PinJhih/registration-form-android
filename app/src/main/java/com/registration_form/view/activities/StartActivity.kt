@@ -1,9 +1,9 @@
-package com.example.registration_form.view.activity
+package com.registration_form.view.activities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.registration_form.R
+import com.registration_form.R
 
 class StartActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

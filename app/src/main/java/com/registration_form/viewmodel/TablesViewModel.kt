@@ -1,12 +1,12 @@
-package com.example.registration_form.viewmodel
+package com.registration_form.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
-import com.example.registration_form.database.TablesDataBase
-import com.example.registration_form.database.TablesRepository
-import com.example.registration_form.model.Table
+import com.registration_form.database.TablesDataBase
+import com.registration_form.database.TablesRepository
+import com.registration_form.model.Table
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
