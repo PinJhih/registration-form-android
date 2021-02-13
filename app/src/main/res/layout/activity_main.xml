@@ -25,9 +25,11 @@
         android:layout_marginBottom="8dp"
         android:clickable="true"
         android:focusable="true"
+        app:backgroundTint="@color/colorPrimary"
         app:layout_constraintBottom_toTopOf="@+id/adView_main"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_add" />
+        app:srcCompat="@drawable/ic_add"
+        app:tint="#E6FFFFFF" />
 
     <com.google.android.gms.ads.AdView
         android:id="@+id/adView_main"
