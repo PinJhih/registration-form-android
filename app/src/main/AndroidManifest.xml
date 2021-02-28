@@ -12,9 +12,9 @@
         android:theme="@style/Theme.Registrationtable">
         <activity android:name=".view.activities.EditTableActivity" />
         <activity android:name=".view.activities.AddTableActivity" />
-        <activity android:name=".view.activities.StartActivity">
+        <activity android:name=".view.activities.StartActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>

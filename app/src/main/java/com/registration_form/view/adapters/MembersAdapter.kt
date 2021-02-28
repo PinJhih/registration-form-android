@@ -37,13 +37,15 @@ class MembersAdapter(
                 else -> Color.parseColor("#AA4343")
             }
         )
-        itemView.btn_member.setBackgroundResource(
+        /*
+        itemView.btn_member.backgroundT(
             when (status[position]) {
-                'd' -> R.drawable.bg_round_button_gray
-                't' -> R.drawable.bg_round_button_green
-                else -> R.drawable.bg_round_button_red
+                'd' -> Color.parseColor("#D9CECECE")
+                't' -> Color.parseColor("#D9CBFFC4")
+                else -> Color.parseColor("#D9FFC0C0")
             }
         )
+        */
         itemView.btn_member.setOnClickListener {
             (context as EditTableActivity).editStatus(position, members[position])
         }
